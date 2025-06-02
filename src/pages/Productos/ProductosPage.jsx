@@ -1,10 +1,10 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import './ProductosPage.css'; // Estilos personalizados
+import './ProductosPage.css';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 
-// Simulamos una base de datos de productos (puedes reemplazar esto por props o API)
+// Simulación de base de datos
 const productos = [
   { id: 1, nombre: 'PC Gamer Nitro', precio: 3500000, categoria: 'pc gamer', imagen: '' },
   { id: 2, nombre: 'Mouse Gamer RGB', precio: 120000, categoria: 'periféricos', imagen: '' },
@@ -21,14 +21,14 @@ const ProductosPages = () => {
   const queryParams = new URLSearchParams(location.search);
   const categoriaParam = queryParams.get('categoria')?.toLowerCase();
 
-  // Filtrar productos según la categoría en la URL
   const productosFiltrados = categoriaParam
     ? productos.filter(p => p.categoria === categoriaParam)
     : productos;
 
   return (
     <>
-      <Header />
+      <Header ocultarCategoriasYContacto={true} />
+
 
       <main className="productos-page-container">
         <h1 className="titulo-productos">
