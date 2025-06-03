@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import './CartPage.css';
-import Footer from '../../components/Footer/Footer'; // Componente de pie de página
+import Footer from '../../components/Footer/Footer';
 
-// Datos iniciales del carrito
 const initialItems = [
   { id: 1, name: 'Figura de Kurumi', price: 120000, quantity: 1 },
   { id: 2, name: 'Figura de Kurumi', price: 120000, quantity: 1 },
@@ -13,9 +12,17 @@ const initialItems = [
 
 const CartPage = () => {
   const [items, setItems] = useState(initialItems);
+  const [usuario, setUsuario] = useState(null);
   const navigate = useNavigate();
 
-  // Actualiza la cantidad de un ítem, asegurando mínimo 1
+  useEffect(() => {
+    // Obtener el usuario del localStorage al cargar la página
+    const storedUser = localStorage.getItem('usuario');
+    if (storedUser) {
+      setUsuario(storedUser);
+    }
+  }, []);
+
   const updateQuantity = (id, delta) => {
     setItems(prev =>
       prev.map(item =>
@@ -26,11 +33,15 @@ const CartPage = () => {
     );
   };
 
-  // Calcula el subtotal del carrito
   const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  // Maneja la acción de pagar y navega a la página de orden
   const handlePay = () => {
+    if (!usuario) {
+      alert('Debes iniciar sesión para continuar con el pago.');
+      navigate('/login');
+      return;
+    }
+
     navigate('/order', {
       state: {
         items,
@@ -39,17 +50,32 @@ const CartPage = () => {
     });
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('usuario');
+    setUsuario(null);
+    navigate('/login');
+  };
+
   return (
     <>
       <div className="container">
-        {/* Header */}
         <img src="/images/logo.png" alt="Logo" className="logo" />
         <h1 className="welcome-message">Bienvenido al carrito</h1>
+
+        {/* Mostrar usuario si está logueado */}
+        {usuario ? (
+          <div className="usuario-info">
+            <p>Sesión iniciada como: <strong>{usuario}</strong></p>
+            <button onClick={handleLogout}>Cerrar sesión</button>
+          </div>
+        ) : (
+          <button onClick={() => navigate('/login')}>Iniciar sesión</button>
+        )}
+
         <button className="volver-home-button" onClick={() => navigate('/')}>
           Volver al Home
         </button>
 
-        {/* Contenido del carrito */}
         <h2>CARRITO</h2>
         <div className="cart-items">
           {items.map(item => (
@@ -65,24 +91,16 @@ const CartPage = () => {
           ))}
         </div>
 
-        {/* Resumen del carrito */}
         <div className="cart-summary">
           <h3>Total del carrito</h3>
-          <p>
-            Subtotal: <strong>${subtotal.toLocaleString()}</strong>
-          </p>
-          <p>
-            Envío: <strong>Gratis</strong>
-          </p>
-          <p>
-            Total: <strong>${subtotal.toLocaleString()}</strong>
-          </p>
+          <p>Subtotal: <strong>${subtotal.toLocaleString()}</strong></p>
+          <p>Envío: <strong>Gratis</strong></p>
+          <p>Total: <strong>${subtotal.toLocaleString()}</strong></p>
           <button className="pay-button" onClick={handlePay}>
             PAGAR
           </button>
         </div>
 
-        {/* Pie de página */}
         <Footer />
       </div>
     </>
@@ -90,4 +108,3 @@ const CartPage = () => {
 };
 
 export default CartPage;
-                                    

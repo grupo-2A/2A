@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
-import Footer from '../../components/Footer/Footer'; // Componente de pie de página
+import Footer from '../../components/Footer/Footer';
 
 const LoginPage = () => {
   const navigate = useNavigate();
 
-  // Estados para inputs y mensaje
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -33,7 +32,11 @@ const LoginPage = () => {
 
       if (data.success) {
         setMessage(data.message);
-        // Redirigir a CartPage tras login exitoso
+
+        // Guardar el nombre de usuario (ajusta según tu backend)
+        const nombreUsuario = data.username || emailOrPhone;
+        localStorage.setItem('usuario', nombreUsuario);
+
         navigate('/cart');
       } else {
         setMessage(data.message);
