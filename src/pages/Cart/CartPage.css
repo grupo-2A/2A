@@ -16,8 +16,8 @@
 
 /* ========== LAYOUT GENERAL ========== */
 .container {
-  background: #111;
-  color: white;
+  background: #0f0606;
+  color: rgb(255, 255, 255);
   font-family: Arial, sans-serif;
   padding: 40px;
   min-height: 100vh;
@@ -41,7 +41,7 @@
 /* ========== BOTONES GENERALES ========== */
 button {
   background-color: #222;
-  color: white;
+  color: rgb(73, 68, 68);
   border: none;
   padding: 10px 20px;
   font-weight: bold;
@@ -168,81 +168,4 @@ button:hover {
 
 .pay-button:hover {
   background-color: #6a0dad;
-}
-
-/* ========== PANEL DE ADMINISTRADOR ========== */
-.admin-panel {
-  display: flex;
-  flex-direction: column;
-}
-
-/* Sidebar */
-.admin-sidebar {
-  border-right: 2px solid #ccc;
-  padding-right: 20px;
-  margin-bottom: 1rem;
-}
-
-/* Menú */
-.admin-menu li {
-  margin-bottom: 10px;
-}
-
-.admin-menu button {
-  width: 100%;
-  padding: 10px;
-  background-color: #eaeaea;
-  border: none;
-  border-radius: 5px;
-  text-align: left;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
-
-.admin-menu button:hover {
-  background-color: #d0d0d0;
-}
-
-/* Contenido del admin */
-.admin-content {
-  padding: 10px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
-}
-
-.admin-content h2 {
-  margin-bottom: 10px;
-  color: #333;
-}
-
-/* ========== RESPONSIVE ========== */
-@media (max-width: 768px) {
-  .admin-panel {
-    flex-direction: column;
-  }
-
-  .admin-sidebar {
-    border-right: none;
-    border-bottom: 2px solid #ccc;
-    padding-right: 0;
-    padding-bottom: 10px;
-  }
-}
-
-.admin-panel {
-  display: flex;
-  gap: 20px;
-}
-
-.admin-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 220px;
-}
-
-.admin-content {
-  flex: 1;
 }

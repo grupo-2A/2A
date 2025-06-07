@@ -5,6 +5,8 @@ import GestionUsuarios from './sections/GestionUsuarios';
 import ConfiguracionTienda from './sections/ConfiguracionTienda';
 import Seguridad from './sections/Seguridad';
 
+import './AdminPanel.css';
+
 const AdminPanel = () => {
   const [adminSection, setAdminSection] = useState('gestion-productos');
 
@@ -26,55 +28,41 @@ const AdminPanel = () => {
   };
 
   return (
-    <div
-      className="admin-panel"
-      style={{
-        display: 'flex',
-        flexDirection: 'row', // fila para botones y contenido lado a lado
-        gap: '20px',
-        alignItems: 'flex-start', // alinea arriba
-        padding: '20px',
-      }}
-    >
-      <div
-        className="admin-buttons"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px',
-          width: '220px',
-        }}
-      >
-        <button onClick={() => setAdminSection('gestion-productos')}>
+    <div className="admin-panel">
+      <div className="admin-buttons admin-menu">
+        <button
+          className={adminSection === 'gestion-productos' ? 'active' : ''}
+          onClick={() => setAdminSection('gestion-productos')}
+        >
           Gestión de Productos
         </button>
-        <button onClick={() => setAdminSection('gestion-pedidos')}>
+        <button
+          className={adminSection === 'gestion-pedidos' ? 'active' : ''}
+          onClick={() => setAdminSection('gestion-pedidos')}
+        >
           Gestión de Pedidos
         </button>
-        <button onClick={() => setAdminSection('gestion-usuarios')}>
+        <button
+          className={adminSection === 'gestion-usuarios' ? 'active' : ''}
+          onClick={() => setAdminSection('gestion-usuarios')}
+        >
           Gestión de Usuarios
         </button>
-        <button onClick={() => setAdminSection('configuracion-tienda')}>
+        <button
+          className={adminSection === 'configuracion-tienda' ? 'active' : ''}
+          onClick={() => setAdminSection('configuracion-tienda')}
+        >
           Configuración de la Tienda
         </button>
-        <button onClick={() => setAdminSection('seguridad')}>
+        <button
+          className={adminSection === 'seguridad' ? 'active' : ''}
+          onClick={() => setAdminSection('seguridad')}
+        >
           Seguridad
         </button>
       </div>
 
-      <div
-        className="admin-content"
-        style={{
-          flex: 1, // ocupa el espacio restante
-          border: '1px solid #ccc',
-          padding: '15px',
-          borderRadius: '8px',
-          backgroundColor: '#f9f9f9',
-          minHeight: '300px',
-        }}
-      >
-        {renderAdminContent()}
-      </div>
+      <div className="admin-content">{renderAdminContent()}</div>
     </div>
   );
 };
