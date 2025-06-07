@@ -1,4 +1,4 @@
-/* Animación de fondo */
+/* ========== ANIMACIONES ========== */
 @keyframes pixelFade {
   0% {
     background-color: #111;
@@ -14,7 +14,7 @@
   }
 }
 
-/* Contenedor principal */
+/* ========== LAYOUT GENERAL ========== */
 .container {
   background: #111;
   color: white;
@@ -24,13 +24,12 @@
   animation: pixelFade 10s infinite alternate;
 }
 
-/* Logo */
+/* ========== LOGO Y TEXTO ========== */
 .logo {
   width: 100px;
   height: auto;
 }
 
-/* Texto Bienvenido */
 .bienvenido-text {
   font-size: 1.4rem;
   font-weight: bold;
@@ -39,18 +38,7 @@
   text-align: center;
 }
 
-/* Botones superiores */
-.header-buttons {
-  position: fixed;
-  top: 20px;
-  right: 200px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  z-index: 1001;
-}
-
-/* Botón común */
+/* ========== BOTONES GENERALES ========== */
 button {
   background-color: #222;
   color: white;
@@ -63,11 +51,22 @@ button {
 }
 
 button:hover {
-  background-color: #6a0dad; /* morado */
+  background-color: #6a0dad;
   color: white;
 }
 
-/* Tabs (Administrador, Cliente, Vendedor) */
+/* ========== BOTONES SUPERIORES FIJOS ========== */
+.header-buttons {
+  position: fixed;
+  top: 20px;
+  right: 200px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 1001;
+}
+
+/* ========== TABS (Administrador, Cliente, Vendedor) ========== */
 .tabs {
   display: flex;
   justify-content: center;
@@ -82,35 +81,30 @@ button:hover {
   cursor: pointer;
   font-weight: bold;
   border-radius: 6px;
-  transition: background-color 0.2s, color 0.2s;
   color: #333;
+  transition: background-color 0.2s, color 0.2s;
 }
 
-.tabs button:hover {
-  background-color: #a855f7;
-  color: white;
-}
-
+.tabs button:hover,
 .tabs button.active {
   background-color: #a855f7;
   color: white;
 }
 
-/* Contenedor de productos */
+/* ========== CARRITO DE COMPRAS ========== */
 .cart-items {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* Cada producto del carrito */
 .cart-item {
   background: #000;
   border-radius: 10px;
   display: flex;
   align-items: center;
-  padding: 10px 20px;
   justify-content: space-between;
+  padding: 10px 20px;
   max-width: 700px;
   width: 100%;
 }
@@ -145,8 +139,7 @@ button:hover {
 
 /* Resumen del carrito */
 .cart-summary {
-  margin-top: 30px;
-  margin-bottom: 40px;
+  margin: 30px 0 40px;
   padding: 20px;
   border: 1px solid white;
   width: fit-content;
@@ -177,12 +170,20 @@ button:hover {
   background-color: #6a0dad;
 }
 
-/* Menú lateral administrador */
+/* ========== PANEL DE ADMINISTRADOR ========== */
+.admin-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sidebar */
 .admin-sidebar {
   border-right: 2px solid #ccc;
   padding-right: 20px;
+  margin-bottom: 1rem;
 }
 
+/* Menú */
 .admin-menu li {
   margin-bottom: 10px;
 }
@@ -203,12 +204,12 @@ button:hover {
   background-color: #d0d0d0;
 }
 
-/* Contenido del administrador */
+/* Contenido del admin */
 .admin-content {
   padding: 10px;
   background-color: #f9f9f9;
   border-radius: 10px;
-  box-shadow: 0px 0px 8px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
 }
 
 .admin-content h2 {
@@ -216,7 +217,7 @@ button:hover {
   color: #333;
 }
 
-/* Responsive */
+/* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
   .admin-panel {
     flex-direction: column;
@@ -228,4 +229,20 @@ button:hover {
     padding-right: 0;
     padding-bottom: 10px;
   }
+}
+
+.admin-panel {
+  display: flex;
+  gap: 20px;
+}
+
+.admin-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 220px;
+}
+
+.admin-content {
+  flex: 1;
 }
