@@ -154,4 +154,31 @@
     background-color: #6a0dad;
   }
   
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+  }
+  
+  .tabs button {
+    background-color: transparent;
+    border: none;
+    color: #333;
+    font-size: 16px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .tabs button:hover {
+    color: #f3eeee;
+  }
+  
+  .tabs button.active {
+    font-weight: bold;
+    color: #ebdfdf;
+    border-bottom: 2px solid #000; /* Opcional para indicar la pestaña activa */
+  }
+  
   
