@@ -1,65 +1,198 @@
-import React, { useState } from 'react';
-
-// Mock usuarios; luego se puede reemplazar con llamada a API o DB real
-const initialUsuarios = [
-  { id: 1, nombre: 'Juan', email: 'juan@mail.com' },
-  { id: 2, nombre: 'Ana', email: 'ana@mail.com' },
-];
+import React, { useState, useEffect } from 'react';
 
 const GestionUsuarios = () => {
-  const [usuarios, setUsuarios] = useState(initialUsuarios);
-  const [newUsuario, setNewUsuario] = useState({ nombre: '', email: '' });
+  const [usuarios, setUsuarios] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const handleAgregar = () => {
-    if (!newUsuario.nombre || !newUsuario.email) {
-      alert('Completa nombre y email');
+  // Estado para nuevo usuario a agregar
+  const [newUsuario, setNewUsuario] = useState({
+    nombre: '',
+    apellido: '',
+    cedula: '',
+    telefono: '',
+    correo: '',
+    direccion: '',
+    contrasena: '',
+    rol: '',
+  });
+
+  // Cargar usuarios desde backend
+  const cargarUsuarios = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch('http://localhost:8000/usuarios');
+      if (!res.ok) throw new Error('Error al cargar usuarios');
+      const data = await res.json();
+      setUsuarios(data);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    cargarUsuarios();
+  }, []);
+
+  // Modificar usuario
+  const handleModificar = async (id, campo, valor) => {
+    const usuario = usuarios.find((u) => u.id === id);
+    if (!usuario) return;
+
+    const usuarioActualizado = { ...usuario, [campo]: valor };
+
+    try {
+      const res = await fetch(`http://localhost:8000/usuarios/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(usuarioActualizado),
+      });
+      if (!res.ok) throw new Error('Error al actualizar usuario');
+
+      setUsuarios((prev) =>
+        prev.map((u) => (u.id === id ? usuarioActualizado : u))
+      );
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
+  // Eliminar usuario
+  const handleEliminar = async (id) => {
+    if (!window.confirm('¿Seguro que quieres eliminar este usuario?')) return;
+
+    try {
+      const res = await fetch(`http://localhost:8000/usuarios/${id}`, {
+        method: 'DELETE',
+      });
+      if (!res.ok) throw new Error('Error al eliminar usuario');
+
+      setUsuarios((prev) => prev.filter((u) => u.id !== id));
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
+  // Agregar nuevo usuario (usando endpoint /register)
+  const handleAgregar = async () => {
+    // Validar campos mínimos
+    if (!newUsuario.nombre || !newUsuario.apellido || !newUsuario.correo || !newUsuario.contrasena) {
+      alert('Completa nombre, apellido, correo y contraseña');
       return;
     }
-    const nuevo = { id: Date.now(), ...newUsuario };
-    setUsuarios([...usuarios, nuevo]);
-    setNewUsuario({ nombre: '', email: '' });
+
+    try {
+      const res = await fetch('http://localhost:8000/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newUsuario),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message || 'Error al agregar usuario');
+        return;
+      }
+
+      alert('Usuario agregado correctamente');
+      setNewUsuario({
+        nombre: '',
+        apellido: '',
+        cedula: '',
+        telefono: '',
+        correo: '',
+        direccion: '',
+        contrasena: '',
+        rol: '',
+      });
+
+      cargarUsuarios(); // Recargar lista
+    } catch (e) {
+      console.error('Error al agregar usuario:', e);
+      alert('Error al agregar usuario');
+    }
   };
 
-  const handleEliminar = id => {
-    setUsuarios(usuarios.filter(u => u.id !== id));
-  };
-
-  const handleModificar = (id, campo, valor) => {
-    setUsuarios(
-      usuarios.map(u => (u.id === id ? { ...u, [campo]: valor } : u))
-    );
-  };
+  if (loading) return <p>Cargando usuarios...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div>
       <h2>Gestión de Usuarios</h2>
 
-      <table border="1" cellPadding="5" style={{ width: '100%' }}>
+      <table border="1" cellPadding="5" style={{ width: '100%', fontSize: '14px' }}>
         <thead>
           <tr>
             <th>ID</th>
             <th>Nombre</th>
-            <th>Email</th>
+            <th>Apellido</th>
+            <th>Cédula</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+            <th>Dirección</th>
+            <th>Rol</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {usuarios.map(u => (
+          {usuarios.map((u) => (
             <tr key={u.id}>
               <td>{u.id}</td>
               <td>
                 <input
                   type="text"
                   value={u.nombre}
-                  onChange={e => handleModificar(u.id, 'nombre', e.target.value)}
+                  onChange={(e) => handleModificar(u.id, 'nombre', e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={u.apellido}
+                  onChange={(e) => handleModificar(u.id, 'apellido', e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={u.cedula}
+                  onChange={(e) => handleModificar(u.id, 'cedula', e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={u.telefono}
+                  onChange={(e) => handleModificar(u.id, 'telefono', e.target.value)}
                 />
               </td>
               <td>
                 <input
                   type="email"
-                  value={u.email}
-                  onChange={e => handleModificar(u.id, 'email', e.target.value)}
+                  value={u.correo}
+                  onChange={(e) => handleModificar(u.id, 'correo', e.target.value)}
                 />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={u.direccion}
+                  onChange={(e) => handleModificar(u.id, 'direccion', e.target.value)}
+                />
+              </td>
+              <td>
+                <select
+                  value={u.rol || ''}
+                  onChange={(e) => handleModificar(u.id, 'rol', e.target.value)}
+                >
+                  <option value="">Seleccione rol</option>
+                  <option value="admin">Admin</option>
+                  <option value="cliente">Cliente</option>
+                  <option value="vendedor">Vendedor</option>
+                </select>
               </td>
               <td>
                 <button onClick={() => handleEliminar(u.id)}>Eliminar</button>
@@ -70,19 +203,62 @@ const GestionUsuarios = () => {
       </table>
 
       <h3>Agregar nuevo usuario</h3>
-      <input
-        type="text"
-        placeholder="Nombre"
-        value={newUsuario.nombre}
-        onChange={e => setNewUsuario({ ...newUsuario, nombre: e.target.value })}
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={newUsuario.email}
-        onChange={e => setNewUsuario({ ...newUsuario, email: e.target.value })}
-      />
-      <button onClick={handleAgregar}>Agregar Usuario</button>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '10px' }}>
+        <input
+          type="text"
+          placeholder="Nombre"
+          value={newUsuario.nombre}
+          onChange={(e) => setNewUsuario({ ...newUsuario, nombre: e.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="Apellido"
+          value={newUsuario.apellido}
+          onChange={(e) => setNewUsuario({ ...newUsuario, apellido: e.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="Cédula"
+          value={newUsuario.cedula}
+          onChange={(e) => setNewUsuario({ ...newUsuario, cedula: e.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="Teléfono"
+          value={newUsuario.telefono}
+          onChange={(e) => setNewUsuario({ ...newUsuario, telefono: e.target.value })}
+        />
+        <input
+          type="email"
+          placeholder="Correo"
+          value={newUsuario.correo}
+          onChange={(e) => setNewUsuario({ ...newUsuario, correo: e.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="Dirección"
+          value={newUsuario.direccion}
+          onChange={(e) => setNewUsuario({ ...newUsuario, direccion: e.target.value })}
+        />
+        <input
+          type="password"
+          placeholder="Contraseña"
+          value={newUsuario.contrasena}
+          onChange={(e) => setNewUsuario({ ...newUsuario, contrasena: e.target.value })}
+        />
+        <select
+          value={newUsuario.rol}
+          onChange={(e) => setNewUsuario({ ...newUsuario, rol: e.target.value })}
+        >
+          <option value="">Seleccione rol</option>
+          <option value="admin">Admin</option>
+          <option value="cliente">Cliente</option>
+          <option value="vendedor">Vendedor</option>
+        </select>
+      </div>
+      <button onClick={handleAgregar} style={{ marginTop: '10px' }}>
+        Agregar Usuario
+      </button>
     </div>
   );
 };

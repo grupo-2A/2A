@@ -40,7 +40,7 @@
   
   /* Contenido principal */
   .admin-content {
-    flex: 9 2 auto; /* Permite crecer y encoger según espacio */
+    flex: 9 2 1; /* Permite crecer y encoger según espacio */
     min-width: 0; /* Evita overflow en flexbox */
     min-height: 300px; /* Altura mínima */
     padding: 15px;
