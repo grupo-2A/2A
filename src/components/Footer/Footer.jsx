@@ -4,7 +4,7 @@ import './footer.css';
 const Footer = () => (
   <><div id="contacto" className="footer-container">
     <div className="footer-logo-section">
-      <img src="/public/images/logo.png" alt="Ícono" className="footer-logo" />
+      <img src="/images/logo.png" alt="Ícono" className="footer-logo" />
       <h2 className="footer-title">Loot para tu Setup</h2>
     </div>
 

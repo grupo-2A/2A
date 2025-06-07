@@ -165,7 +165,7 @@
   cursor: pointer;
   position: fixed;         /* Fijo en la página */
   top: 20px;               /* Separado 20px del borde superior */
-  right: 20px;             /* Separado 20px del borde derecho */
+  right: 100px;             /* Separado 20px del borde derecho */
   border-radius: 4px;
   transition: background-color 0.3s ease;
   z-index: 1000;           /* Encima de otros elementos */

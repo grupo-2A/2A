@@ -1,42 +1,8 @@
-.header {
-  position: relative; /* Para posicionar el logo de forma absoluta */
-  display: flex;
-  justify-content: flex-start; /* Alinea todos los elementos al inicio (izquierda) */
-  align-items: center;
-  padding: 10px 20px;
-  gap: 42px; /* Espacio entre elementos directos hijos */
+.header-group-item {
+  margin-right: 30px;
 }
 
-.header-logo {
-  width: 120px;
-  height: 120px;
-  /* Ya no es necesario position absolute, para evitar solapamientos */
-  /* Si quieres mantenerlo absoluto, debes dejar espacio para los botones */
-}
-
-.header-buttons {
-  display: flex;
-  align-items: center;
-  gap: 42px;
-  margin-left: 20px;
-}
-
-.header-buttons > *:last-child {
-  margin-right: 20px; /* Ajusta para separar más el último botón */
-}
-
-.hero-image-container {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-}
-
-.hero-image {
-  width: 100%;
-  max-width: 1250px;
-  height: 480px;
-  object-fit: cover;
-  border-radius: 12px;
-  display: block;
-  margin: 0 auto;
+/* Opcional: elimina el margen derecho en el último elemento */
+.header-group-item:last-child {
+  margin-right: 0;
 }
