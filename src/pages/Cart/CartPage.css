@@ -1,187 +1,73 @@
 /* Animación de fondo */
 @keyframes pixelFade {
-    0% {
-      background-color: #111;
-      filter: brightness(1);
-    }
-    50% {
-      background-color: rgb(63, 20, 63);
-      filter: brightness(1.2);
-    }
-    100% {
-      background-color: #111;
-      filter: brightness(1);
-    }
+  0% {
+    background-color: #111;
+    filter: brightness(1);
   }
-  
-  /* Contenedor principal */
-  .container {
-    background: #111;
-    color: white;
-    font-family: Arial, sans-serif;
-    padding: 40px;
-    min-height: 100vh;
-    animation: pixelFade 10s infinite alternate;
+  50% {
+    background-color: rgb(63, 20, 63);
+    filter: brightness(1.2);
   }
-  
-  /* Logo */
-  .logo {
-    width: 100px;
-    height: auto;
+  100% {
+    background-color: #111;
+    filter: brightness(1);
   }
-  
-  /* Mensaje de bienvenida */
-  .welcome-message {
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin: 0;
-    color: white;
-    text-align: center;
-  }
-  
-  /* Botones superiores (Home, Login, Logout) */
-  .header-buttons {
-    position: fixed;
-    top: 20px;
-    right: 200px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    z-index: 1001;
-  }
-  
-  .usuario-text {
-    color: white;
-    font-weight: bold;
-    margin: 0;
-  }
-  
-  /* Botón común (Home, Login, Logout) */
-  .volver-home-button {
-    background-color: black;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .volver-home-button:hover {
-    background-color: #6a0dad;
-  }
-  
-  /* Contenedor de productos */
-  .cart-items {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  /* Cada producto del carrito */
-  .cart-item {
-    background: #000;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    padding: 10px 20px;
-    justify-content: space-between;
-    min-height: 50px;
-    max-width: 700px;
-    width: 100%;
-  }
-  
-  .cart-item img {
-    width: 80px;
-    height: auto;
-  }
-  
-  .cart-item span {
-    flex: 1;
-    margin-left: 50px;
-  }
-  
-  /* Controles de cantidad */
-  .quantity-controls {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    background: white;
-    border-radius: 6px;
-    padding: 5px 10px;
-    color: rgb(82, 13, 128);
-  }
-  
-  .quantity-controls button {
-    border: none;
-    background: none;
-    font-size: 18px;
-    cursor: pointer;
-  }
-  
-  /* Resumen del carrito */
-  .cart-summary {
-    margin-top: 30px;
-    margin-bottom: 40px;
-    padding: 20px;
-    border: 1px solid white;
-    width: fit-content;
-    background: #1a1a1a;
-  }
-  
-  .cart-summary h3 {
-    margin-bottom: 10px;
-  }
-  
-  .cart-summary p {
-    margin: 5px 0;
-  }
-  
-  /* Botón de pagar */
-  .pay-button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background: purple;
-    color: white;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  
-  .pay-button:hover {
-    background-color: #6a0dad;
-  }
-  
-  .tabs {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin: 20px 0;
-  }
-  
-  .tabs button {
-    background-color: transparent;
-    border: none;
-    color: #333;
-    font-size: 16px;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: color 0.3s;
-  }
-  
-  .tabs button:hover {
-    color: #f3eeee;
-  }
-  
-  .tabs button.active {
-    font-weight: bold;
-    color: #ebdfdf;
-    border-bottom: 2px solid #000; /* Opcional para indicar la pestaña activa */
-  }
-  
-  /* Pestañas principales (Administrador, Cliente, Vendedor) */
+}
+
+/* Contenedor principal */
+.container {
+  background: #111;
+  color: white;
+  font-family: Arial, sans-serif;
+  padding: 40px;
+  min-height: 100vh;
+  animation: pixelFade 10s infinite alternate;
+}
+
+/* Logo */
+.logo {
+  width: 100px;
+  height: auto;
+}
+
+/* Texto Bienvenido */
+.bienvenido-text {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-top: 10px;
+  color: white;
+  text-align: center;
+}
+
+/* Botones superiores */
+.header-buttons {
+  position: fixed;
+  top: 20px;
+  right: 200px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 1001;
+}
+
+/* Botón común */
+button {
+  background-color: #222;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #6a0dad; /* morado */
+  color: white;
+}
+
+/* Tabs (Administrador, Cliente, Vendedor) */
 .tabs {
   display: flex;
   justify-content: center;
@@ -196,11 +82,99 @@
   cursor: pointer;
   font-weight: bold;
   border-radius: 6px;
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.2s, color 0.2s;
+  color: #333;
 }
 
 .tabs button:hover {
-  background-color: #ddd;
+  background-color: #a855f7;
+  color: white;
+}
+
+.tabs button.active {
+  background-color: #a855f7;
+  color: white;
+}
+
+/* Contenedor de productos */
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Cada producto del carrito */
+.cart-item {
+  background: #000;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  justify-content: space-between;
+  max-width: 700px;
+  width: 100%;
+}
+
+.cart-item img {
+  width: 80px;
+  height: auto;
+}
+
+.cart-item span {
+  flex: 1;
+  margin-left: 50px;
+}
+
+/* Controles de cantidad */
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: white;
+  border-radius: 6px;
+  padding: 5px 10px;
+  color: rgb(82, 13, 128);
+}
+
+.quantity-controls button {
+  border: none;
+  background: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Resumen del carrito */
+.cart-summary {
+  margin-top: 30px;
+  margin-bottom: 40px;
+  padding: 20px;
+  border: 1px solid white;
+  width: fit-content;
+  background: #1a1a1a;
+}
+
+.cart-summary h3 {
+  margin-bottom: 10px;
+}
+
+.cart-summary p {
+  margin: 5px 0;
+}
+
+/* Botón de pagar */
+.pay-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: purple;
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pay-button:hover {
+  background-color: #6a0dad;
 }
 
 /* Menú lateral administrador */
@@ -229,6 +203,7 @@
   background-color: #d0d0d0;
 }
 
+/* Contenido del administrador */
 .admin-content {
   padding: 10px;
   background-color: #f9f9f9;
