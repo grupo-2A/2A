@@ -19,6 +19,13 @@ const CartPage = () => {
     if (storedRol) setRol(storedRol);
   }, []);
 
+  // Ajustar pestaña activa si el rol es vendedor y la pestaña es cliente
+  useEffect(() => {
+    if (rol === 'vendedor' && tab === 'cliente') {
+      setTab('vendedor');
+    }
+  }, [rol, tab]);
+
   const handleLogout = () => {
     localStorage.removeItem('usuario');
     localStorage.removeItem('rol');
@@ -60,13 +67,15 @@ const CartPage = () => {
           </button>
         )}
 
-        {/* La pestaña Cliente siempre visible */}
-        <button
-          className={tab === 'cliente' ? 'active' : ''}
-          onClick={() => setTab('cliente')}
-        >
-          Cliente
-        </button>
+        {/* Mostrar pestaña Cliente solo si el rol NO es 'vendedor' */}
+        {rol !== 'vendedor' && (
+          <button
+            className={tab === 'cliente' ? 'active' : ''}
+            onClick={() => setTab('cliente')}
+          >
+            Cliente
+          </button>
+        )}
 
         {/* Mostrar pestaña Vendedor solo si rol es 'vendedor' */}
         {rol === 'vendedor' && (

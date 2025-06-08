@@ -15,7 +15,7 @@ const pool = mysql.createPool({
   database: 'overlootdb',
 });
 
-// ENDPOINT: Registro de usuario
+// Registro de usuario
 app.post('/register', async (req, res) => {
   const {
     nombre,
@@ -60,7 +60,7 @@ app.post('/register', async (req, res) => {
   }
 });
 
-// ENDPOINT: Inicio de sesión
+// Inicio de sesión
 app.post('/login', async (req, res) => {
   const { email_or_phone, password } = req.body;
 
@@ -86,7 +86,6 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ success: false, message: 'Contraseña incorrecta' });
     }
 
-    // Enviar rol y nombre de usuario junto con el mensaje de éxito
     res.json({
       success: true,
       message: 'Inicio de sesión exitoso',
@@ -99,7 +98,7 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// ENDPOINT: Obtener todos los usuarios (sin contraseñas)
+// Obtener todos los usuarios
 app.get('/usuarios', async (req, res) => {
   try {
     const [rows] = await pool.query(
@@ -112,7 +111,7 @@ app.get('/usuarios', async (req, res) => {
   }
 });
 
-// ENDPOINT: Modificar usuario (excepto contraseña)
+// Modificar usuario
 app.put('/usuarios/:id', async (req, res) => {
   const { id } = req.params;
   const { nombre, apellido, cedula, telefono, correo, direccion, rol } = req.body;
@@ -130,7 +129,7 @@ app.put('/usuarios/:id', async (req, res) => {
   }
 });
 
-// ENDPOINT: Eliminar usuario
+// Eliminar usuario
 app.delete('/usuarios/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -141,7 +140,6 @@ app.delete('/usuarios/:id', async (req, res) => {
     res.status(500).json({ success: false, message: 'Error al eliminar usuario' });
   }
 });
-
 
 const PORT = 8000;
 console.log('Iniciando servidor...');
