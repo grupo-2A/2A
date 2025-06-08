@@ -9,6 +9,7 @@ const LoginPage = () => {
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [, setRol] = useState(''); // Estado para guardar el rol
 
   const handleLogin = async () => {
     if (!emailOrPhone || !password) {
@@ -36,6 +37,13 @@ const LoginPage = () => {
         // Guardar el nombre de usuario (ajusta según tu backend)
         const nombreUsuario = data.username || emailOrPhone;
         localStorage.setItem('usuario', nombreUsuario);
+
+        // Guardar el rol recibido desde el backend
+        const rolUsuario = data.role; // se espera que el backend envíe el campo 'role'
+        if (rolUsuario) {
+          localStorage.setItem('rol', rolUsuario);
+          setRol(rolUsuario); // Guardar también en estado
+        }
 
         navigate('/cart');
       } else {

@@ -1,4 +1,3 @@
-// ClienteView.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -49,29 +48,33 @@ const ClienteView = ({ usuario }) => {
     <div className="cart-content">
       <h1 className="welcome-message">Bienvenido al carrito</h1>
 
-      <div className="cart-items">
-        {items.map(item => (
-          <div className="cart-item" key={item.id}>
-            <img src="/images/kurumi.png" alt={item.name} />
-            <span>{item.name}</span>
-            <div className="quantity-controls">
-              <button onClick={() => updateQuantity(item.id, 1)}>▲</button>
-              <span>{item.quantity}</span>
-              <button onClick={() => updateQuantity(item.id, -1)}>▼</button>
+      {/* Contenedor flex para items y resumen */}
+      <div className="cart-main" style={{ display: 'flex', gap: '2rem' }}>
+        <div className="cart-items" style={{ flex: 2 }}>
+          {items.map(item => (
+            <div className="cart-item" key={item.id}>
+              <img src="/images/kurumi.png" alt={item.name} />
+              <span>{item.name}</span>
+              <div className="quantity-controls">
+                <button onClick={() => updateQuantity(item.id, 1)}>▲</button>
+                <span>{item.quantity}</span>
+                <button onClick={() => updateQuantity(item.id, -1)}>▼</button>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      <div className="cart-summary">
-        <h3>Total del carrito</h3>
-        <p>Subtotal: <strong>${subtotal.toLocaleString()}</strong></p>
-        <p>Envío: <strong>Gratis</strong></p>
-        <p>Total: <strong>${subtotal.toLocaleString()}</strong></p>
-        <button className="pay-button" onClick={handlePay}>PAGAR</button>
+        <div className="cart-summary" style={{ flex: 1 }}>
+          <h3>Total del carrito</h3>
+          <p>Subtotal: <strong>${subtotal.toLocaleString()}</strong></p>
+          <p>Envío: <strong>Gratis</strong></p>
+          <p>Total: <strong>${subtotal.toLocaleString()}</strong></p>
+          <button className="pay-button" onClick={handlePay}>PAGAR</button>
+        </div>
       </div>
     </div>
   );
 };
 
 export default ClienteView;
+

@@ -1,4 +1,3 @@
-// CartPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer/Footer';
@@ -10,16 +9,21 @@ import './CartPage.css';
 const CartPage = () => {
   const [tab, setTab] = useState('cliente');
   const [usuario, setUsuario] = useState(null);
+  const [rol, setRol] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = localStorage.getItem('usuario');
+    const storedRol = localStorage.getItem('rol');
     if (storedUser) setUsuario(storedUser);
+    if (storedRol) setRol(storedRol);
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('usuario');
+    localStorage.removeItem('rol');
     setUsuario(null);
+    setRol(null);
     navigate('/login');
   };
 
@@ -36,40 +40,49 @@ const CartPage = () => {
         ) : (
           <>
             <button onClick={handleLogout}>Cerrar sesión</button>
-            
-
           </>
         )}
       </div>
+
       <div className="bienvenido-text">
-  Bienvenido: <strong>{usuario}</strong>
-</div>
+        {rol && <strong>{rol} </strong>}Bienvenido: <strong>{usuario}</strong>
+      </div>
+
       {/* Pestañas */}
       <div className="tabs">
-  <button
-    className={tab === 'administrador' ? 'active' : ''}
-    onClick={() => setTab('administrador')}
-  >
-    Administrador
-  </button>
-  <button
-    className={tab === 'cliente' ? 'active' : ''}
-    onClick={() => setTab('cliente')}
-  >
-    Cliente
-  </button>
-  <button
-    className={tab === 'vendedor' ? 'active' : ''}
-    onClick={() => setTab('vendedor')}
-  >
-    Vendedor
-  </button>
-</div>
+        {/* Mostrar pestaña Administrador solo si rol es 'admin' */}
+        {rol === 'admin' && (
+          <button
+            className={tab === 'administrador' ? 'active' : ''}
+            onClick={() => setTab('administrador')}
+          >
+            Administrador
+          </button>
+        )}
+
+        {/* La pestaña Cliente siempre visible */}
+        <button
+          className={tab === 'cliente' ? 'active' : ''}
+          onClick={() => setTab('cliente')}
+        >
+          Cliente
+        </button>
+
+        {/* Mostrar pestaña Vendedor solo si rol es 'vendedor' */}
+        {rol === 'vendedor' && (
+          <button
+            className={tab === 'vendedor' ? 'active' : ''}
+            onClick={() => setTab('vendedor')}
+          >
+            Vendedor
+          </button>
+        )}
+      </div>
 
       {/* Vistas por pestaña */}
       {tab === 'cliente' && <ClienteView usuario={usuario} setUsuario={setUsuario} />}
-      {tab === 'administrador' && <AdminPanel />}
-      {tab === 'vendedor' && <VendedorView />}
+      {tab === 'administrador' && rol === 'admin' && <AdminPanel />}
+      {tab === 'vendedor' && rol === 'vendedor' && <VendedorView />}
 
       <Footer />
     </div>

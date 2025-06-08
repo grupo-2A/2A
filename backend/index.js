@@ -86,7 +86,13 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ success: false, message: 'Contraseña incorrecta' });
     }
 
-    res.json({ success: true, message: 'Inicio de sesión exitoso' });
+    // Enviar rol y nombre de usuario junto con el mensaje de éxito
+    res.json({
+      success: true,
+      message: 'Inicio de sesión exitoso',
+      username: user.nombre,
+      role: user.rol
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: 'Error en el servidor' });
@@ -97,7 +103,7 @@ app.post('/login', async (req, res) => {
 app.get('/usuarios', async (req, res) => {
   try {
     const [rows] = await pool.query(
-      'SELECT id, nombre, apellido, cedula, telefono, correo, direccion, rol FROM usuarios'
+      'SELECT id, nombre, apellido, cedula, telefono, correo, direccion, contrasena, rol FROM usuarios'
     );
     res.json(rows);
   } catch (error) {
@@ -135,6 +141,7 @@ app.delete('/usuarios/:id', async (req, res) => {
     res.status(500).json({ success: false, message: 'Error al eliminar usuario' });
   }
 });
+
 
 const PORT = 8000;
 console.log('Iniciando servidor...');

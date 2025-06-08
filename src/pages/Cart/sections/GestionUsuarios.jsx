@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 const GestionUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
+  const [usuariosFiltrados, setUsuariosFiltrados] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Estado para nuevo usuario a agregar
   const [newUsuario, setNewUsuario] = useState({
     nombre: '',
     apellido: '',
@@ -17,7 +17,9 @@ const GestionUsuarios = () => {
     rol: '',
   });
 
-  // Cargar usuarios desde backend
+  const [busqueda, setBusqueda] = useState('');
+
+  // Cargar usuarios desde API
   const cargarUsuarios = async () => {
     try {
       setLoading(true);
@@ -25,6 +27,7 @@ const GestionUsuarios = () => {
       if (!res.ok) throw new Error('Error al cargar usuarios');
       const data = await res.json();
       setUsuarios(data);
+      setUsuariosFiltrados(data); // Inicializa filtrados con todos
     } catch (e) {
       setError(e.message);
     } finally {
@@ -36,7 +39,7 @@ const GestionUsuarios = () => {
     cargarUsuarios();
   }, []);
 
-  // Modificar usuario
+  // Manejar modificación de usuario
   const handleModificar = async (id, campo, valor) => {
     const usuario = usuarios.find((u) => u.id === id);
     if (!usuario) return;
@@ -51,15 +54,17 @@ const GestionUsuarios = () => {
       });
       if (!res.ok) throw new Error('Error al actualizar usuario');
 
-      setUsuarios((prev) =>
-        prev.map((u) => (u.id === id ? usuarioActualizado : u))
+      const usuariosActualizados = usuarios.map((u) =>
+        u.id === id ? usuarioActualizado : u
       );
+      setUsuarios(usuariosActualizados);
+      setUsuariosFiltrados(usuariosActualizados);
     } catch (e) {
       alert(e.message);
     }
   };
 
-  // Eliminar usuario
+  // Manejar eliminación de usuario
   const handleEliminar = async (id) => {
     if (!window.confirm('¿Seguro que quieres eliminar este usuario?')) return;
 
@@ -69,16 +74,22 @@ const GestionUsuarios = () => {
       });
       if (!res.ok) throw new Error('Error al eliminar usuario');
 
-      setUsuarios((prev) => prev.filter((u) => u.id !== id));
+      const usuariosActualizados = usuarios.filter((u) => u.id !== id);
+      setUsuarios(usuariosActualizados);
+      setUsuariosFiltrados(usuariosActualizados);
     } catch (e) {
       alert(e.message);
     }
   };
 
-  // Agregar nuevo usuario (usando endpoint /register)
+  // Manejar agregar nuevo usuario
   const handleAgregar = async () => {
-    // Validar campos mínimos
-    if (!newUsuario.nombre || !newUsuario.apellido || !newUsuario.correo || !newUsuario.contrasena) {
+    if (
+      !newUsuario.nombre ||
+      !newUsuario.apellido ||
+      !newUsuario.correo ||
+      !newUsuario.contrasena
+    ) {
       alert('Completa nombre, apellido, correo y contraseña');
       return;
     }
@@ -109,10 +120,32 @@ const GestionUsuarios = () => {
         rol: '',
       });
 
-      cargarUsuarios(); // Recargar lista
+      // Recargar usuarios para actualizar lista
+      await cargarUsuarios();
+      setBusqueda(''); // Limpiar búsqueda al agregar
     } catch (e) {
       console.error('Error al agregar usuario:', e);
       alert('Error al agregar usuario');
+    }
+  };
+
+  // Manejar búsqueda
+  const manejarBusqueda = () => {
+    const texto = busqueda.toLowerCase();
+    const filtrados = usuarios.filter(
+      (u) =>
+        (u.nombre?.toLowerCase() || '').includes(texto) ||
+        (u.apellido?.toLowerCase() || '').includes(texto) ||
+        (u.cedula?.toLowerCase() || '').includes(texto) ||
+        (u.correo?.toLowerCase() || '').includes(texto)
+    );
+    setUsuariosFiltrados(filtrados);
+  };
+
+  // Permitir búsqueda con Enter
+  const onKeyDownBusqueda = (e) => {
+    if (e.key === 'Enter') {
+      manejarBusqueda();
     }
   };
 
@@ -122,6 +155,24 @@ const GestionUsuarios = () => {
   return (
     <div>
       <h2>Gestión de Usuarios</h2>
+
+      {/* Barra de búsqueda */}
+      <div style={{ marginBottom: '15px' }}>
+        <input
+          type="text"
+          placeholder="Buscar por nombre, apellido, cédula o correo"
+          value={busqueda}
+          onChange={(e) => setBusqueda(e.target.value)}
+          onKeyDown={onKeyDownBusqueda}
+          style={{ padding: '5px', width: '300px' }}
+        />
+        <button
+          onClick={manejarBusqueda}
+          style={{ marginLeft: '10px', padding: '5px 10px' }}
+        >
+          Buscar
+        </button>
+      </div>
 
       <table border="1" cellPadding="5" style={{ width: '100%', fontSize: '14px' }}>
         <thead>
@@ -138,7 +189,7 @@ const GestionUsuarios = () => {
           </tr>
         </thead>
         <tbody>
-          {usuarios.map((u) => (
+          {usuariosFiltrados.map((u) => (
             <tr key={u.id}>
               <td>{u.id}</td>
               <td>
@@ -203,7 +254,14 @@ const GestionUsuarios = () => {
       </table>
 
       <h3>Agregar nuevo usuario</h3>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '10px' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '10px',
+          marginTop: '10px',
+        }}
+      >
         <input
           type="text"
           placeholder="Nombre"
