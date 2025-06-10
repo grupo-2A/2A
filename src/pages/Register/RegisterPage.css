@@ -1,4 +1,4 @@
-
+/* CONTENEDOR GENERAL */
 .register-container {
   position: relative;
   min-height: 100vh;
@@ -6,13 +6,10 @@
   font-family: Arial, sans-serif;
   padding: 60px 20px 40px 20px;
   overflow: hidden;
-
-  background-size: 40px 40px;
-
   animation: pixelFade 10s infinite alternate;
 }
 
-/* Animación para alternar entre morado y negro */
+/* ANIMACIÓN FONDO PIXEL */
 @keyframes pixelFade {
   0% {
     background-color: #111;
@@ -28,7 +25,7 @@
   }
 }
 
-/* Botón volver arriba derecha */
+/* BOTÓN "VOLVER AL HOME" */
 .volver-button {
   position: fixed;
   top: 20px;
@@ -49,29 +46,25 @@
   color: white;
 }
 
-/* Contenedor principal */
+/* CONTENIDO PRINCIPAL (FLEX ENTRE FORM E IMAGEN) */
 .register-content {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   gap: 40px;
   flex-wrap: wrap;
 }
 
-/* Formulario */
+/* FORMULARIO */
 .register-form {
   max-width: 400px;
   width: 100%;
-  text-align: center; /* Centrar texto */
-  margin-top: 0;
-  padding-top: 0;
+  text-align: center;
 }
 
 .register-form h2 {
   font-size: 28px;
-  margin-top: 0;
   margin-bottom: 10px;
-  text-align: center;
 }
 
 .register-form p {
@@ -95,7 +88,7 @@
   color: #aaa;
 }
 
-/* Mensajes de error */
+/* MENSAJES DE ERROR */
 .error {
   color: #ff6b6b;
   font-size: 12px;
@@ -103,11 +96,11 @@
   margin-bottom: 8px;
 }
 
-/* Botón registrarse */
+/* BOTÓN REGISTRARSE */
 .register-button {
   width: 100%;
   padding: 12px;
-  background-color: rgb(0, 0, 0);
+  background-color: black;
   border: none;
   color: white;
   font-weight: bold;
@@ -118,10 +111,10 @@
 }
 
 .register-button:hover {
-  background-color: purple; /* Morado más oscuro */
+  background-color: purple;
 }
 
-/* Texto "Inicia sesión" en morado */
+/* TEXTO "¿YA TIENES CUENTA?" */
 .login-link {
   margin-top: 15px;
   font-size: 14px;
@@ -138,7 +131,7 @@
   color: #4b0082;
 }
 
-/* Imagen y texto lateral */
+/* IMAGEN IZQUIERDA */
 .register-image {
   text-align: center;
   max-width: 350px;
@@ -150,13 +143,7 @@
   margin-bottom: 20px;
 }
 
-.register-image h1 {
-  font-size: 24px;
-  letter-spacing: 8px;
-  color: white;
-}
-
-/* Footer */
+/* FOOTER */
 .footer {
   display: flex;
   justify-content: space-around;

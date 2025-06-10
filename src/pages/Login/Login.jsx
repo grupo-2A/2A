@@ -33,8 +33,8 @@ const LoginPage = () => {
 
       if (data.success) {
         setMessage(data.message);
-        // Redirigir a CartPage tras login exitoso
-        navigate('/cart');
+        // ✅ Redirigir a la página de inicio tras login exitoso
+        navigate('/');
       } else {
         setMessage(data.message);
       }
@@ -85,8 +85,7 @@ const LoginPage = () => {
         </div>
 
         <div className="imageSection">
-          <img src="/images/icon.png" alt="Caja" className="boxImage" />
-          <h1 className="logoText">OVERLOOT</h1>
+          <img src="/images/logo.png" alt="Caja" className="boxImage" />
         </div>
       </div>
 

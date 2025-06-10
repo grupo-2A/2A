@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import './CartPage.css';
-import Footer from '../../components/Footer/Footer'; // Componente de pie de página
+import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
 
-// Datos iniciales del carrito
 const initialItems = [
   { id: 1, name: 'Figura de Kurumi', price: 120000, quantity: 1 },
   { id: 2, name: 'Figura de Kurumi', price: 120000, quantity: 1 },
@@ -15,7 +15,6 @@ const CartPage = () => {
   const [items, setItems] = useState(initialItems);
   const navigate = useNavigate();
 
-  // Actualiza la cantidad de un ítem, asegurando mínimo 1
   const updateQuantity = (id, delta) => {
     setItems(prev =>
       prev.map(item =>
@@ -26,10 +25,8 @@ const CartPage = () => {
     );
   };
 
-  // Calcula el subtotal del carrito
   const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  // Maneja la acción de pagar y navega a la página de orden
   const handlePay = () => {
     navigate('/order', {
       state: {
@@ -41,15 +38,9 @@ const CartPage = () => {
 
   return (
     <>
-      <div className="container">
-        {/* Header */}
-        <img src="/images/logo.png" alt="Logo" className="logo" />
-        <h1 className="welcome-message">Bienvenido al carrito</h1>
-        <button className="volver-home-button" onClick={() => navigate('/')}>
-          Volver al Home
-        </button>
+      <Header />
 
-        {/* Contenido del carrito */}
+      <div className="container">
         <h2>CARRITO</h2>
         <div className="cart-items">
           {items.map(item => (
@@ -65,7 +56,6 @@ const CartPage = () => {
           ))}
         </div>
 
-        {/* Resumen del carrito */}
         <div className="cart-summary">
           <h3>Total del carrito</h3>
           <p>
@@ -81,13 +71,11 @@ const CartPage = () => {
             PAGAR
           </button>
         </div>
-
-        {/* Pie de página */}
-        <Footer />
       </div>
+
+      <Footer />
     </>
   );
 };
 
 export default CartPage;
-

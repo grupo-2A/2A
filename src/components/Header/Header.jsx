@@ -1,8 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
 
 const Header = () => {
+  const navigate = useNavigate();
+
   const scrollToCategories = () => {
     const seccion = document.getElementById('categorias');
     if (seccion) seccion.scrollIntoView({ behavior: 'smooth' });
@@ -13,9 +15,20 @@ const Header = () => {
     if (seccion) seccion.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const handleUsuarioClick = () => {
+    const usuario = localStorage.getItem('usuarioLogueado');
+    if (usuario) {
+      navigate('/edit-account');
+    } else {
+      navigate('/login');
+    }
+  };
+
   return (
     <header className="header">
-      <img src="/images/logo.png" alt="Logo Loot para tu Setup" className="header-logo" />
+      <Link to="/" aria-label="Volver al inicio">
+        <img src="/images/logo.png" alt="Logo Overloot" className="header-logo" />
+      </Link>
 
       <nav className="header-buttons" aria-label="Navegación principal">
         <button className="btn-text" onClick={scrollToCategories} aria-label="Ir a categorías">
@@ -29,9 +42,9 @@ const Header = () => {
           <img src="/images/carro.png" alt="Carrito de compras" />
         </Link>
 
-        <Link to="/login" className="btn-icon" aria-label="Iniciar sesión o registrarse">
+        <button onClick={handleUsuarioClick} className="btn-icon" aria-label="Cuenta de usuario">
           <img src="/images/usuario.png" alt="Usuario" />
-        </Link>
+        </button>
       </nav>
     </header>
   );

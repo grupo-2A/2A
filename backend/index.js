@@ -1,124 +1,95 @@
 const express = require('express');
-const mysql = require('mysql2/promise'); // Cliente MySQL con soporte para promesas
-const cors = require('cors');             // Middleware para permitir peticiones cross-origin
-const bcrypt = require('bcrypt');         // Librería para hashear y comparar contraseñas
+const mongoose = require('mongoose');
+const cors = require('cors');
+const bcrypt = require('bcryptjs');
 
 const app = express();
+const PORT = 8000;
 
-// Middleware para permitir peticiones desde cualquier origen (útil para desarrollo frontend/backend separados)
+// Middleware
 app.use(cors());
-
-// Middleware para parsear JSON en el body de las peticiones
 app.use(express.json());
 
-// Crear un pool de conexiones a la base de datos MySQL
-const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: '999999',
-  database: 'overlootdb',
+// Conexión a MongoDB
+mongoose.connect('mongodb://localhost:27017/overloot', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('🟢 Conectado a MongoDB'))
+.catch(err => console.error('❌ Error al conectar a MongoDB:', err));
+
+// Modelo de Usuario
+const usuarioSchema = new mongoose.Schema({
+  nombre: String,
+  correo: String,
+  contrasena: String
 });
 
-// ENDPOINT: Registro de usuario
+const Usuario = mongoose.model('Usuario', usuarioSchema);
+
+// Ruta base
+app.get('/', (req, res) => {
+  res.send('API de Overloot funcionando 🚀');
+});
+
+// Registro
 app.post('/register', async (req, res) => {
-  // Extraer datos enviados desde el frontend
-  const {
-    nombre,
-    apellido,
-    cedula,
-    telefono,
-    correo,
-    direccion,
-    contrasena,
-  } = req.body;
-
-  // Validar que todos los campos obligatorios estén presentes
-  if (!nombre || !apellido || !cedula || !telefono || !correo || !direccion || !contrasena) {
-    return res.status(400).json({ success: false, message: 'Faltan datos obligatorios' });
-  }
-
   try {
-    // Hashear la contraseña con bcrypt (10 saltos de sal)
-    const hashedPassword = await bcrypt.hash(contrasena, 10);
+    const { nombre, correo, contrasena } = req.body;
 
-    // Consulta SQL para insertar nuevo usuario
-    const sql = `
-      INSERT INTO usuarios (nombre, apellido, cedula, telefono, correo, direccion, contrasena)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `;
-
-    // Ejecutar la consulta con los valores recibidos, incluyendo la contraseña hasheada
-    await pool.query(sql, [
-      nombre,
-      apellido,
-      cedula,
-      telefono,
-      correo,
-      direccion,
-      hashedPassword,
-    ]);
-
-    // Responder con éxito
-    res.json({ success: true, message: 'Usuario registrado correctamente' });
-  } catch (error) {
-    console.error(error);
-
-    // Si el error es por duplicado (correo único), enviar mensaje específico
-    if (error.code === 'ER_DUP_ENTRY') {
-      res.status(409).json({ success: false, message: 'El correo ya está registrado' });
-    } else {
-      // Otros errores del servidor
-      res.status(500).json({ success: false, message: 'Error al registrar usuario' });
+    if (!nombre || !correo || !contrasena) {
+      return res.status(400).json({ success: false, message: 'Faltan campos obligatorios' });
     }
+
+    const usuarioExistente = await Usuario.findOne({ correo });
+    if (usuarioExistente) {
+      return res.status(400).json({ success: false, message: 'El correo ya está registrado' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(contrasena, salt);
+
+    const nuevoUsuario = new Usuario({
+      nombre,
+      correo,
+      contrasena: hashedPassword
+    });
+
+    await nuevoUsuario.save();
+
+    return res.status(201).json({ success: true, message: 'Usuario registrado exitosamente' });
+  } catch (error) {
+    console.error('Error en el registro:', error);
+    return res.status(500).json({ success: false, message: 'Error en el registro' });
   }
 });
 
-// ENDPOINT: Inicio de sesión
+// Login
 app.post('/login', async (req, res) => {
-  // Extraer datos enviados desde el frontend
-  const { email_or_phone, password } = req.body;
-
-  // Validar que los campos estén presentes
-  if (!email_or_phone || !password) {
-    return res.status(400).json({ success: false, message: 'Faltan datos obligatorios' });
-  }
-
   try {
-    // Consulta SQL para buscar usuario por correo o teléfono
-    const sql = `
-      SELECT * FROM usuarios WHERE correo = ? OR telefono = ? LIMIT 1
-    `;
-    const [rows] = await pool.query(sql, [email_or_phone, email_or_phone]);
+    const { email_or_phone, password } = req.body;
 
-    // Si no se encuentra usuario, responder con error
-    if (rows.length === 0) {
+    const usuario = await Usuario.findOne({
+      $or: [{ correo: email_or_phone }]
+    });
+
+    if (!usuario) {
       return res.status(401).json({ success: false, message: 'Usuario no encontrado' });
     }
 
-    const user = rows[0];
-
-    // Comparar la contraseña enviada con la contraseña hasheada en la base de datos
-    const passwordMatch = await bcrypt.compare(password, user.contrasena);
-
-    // Si no coinciden, responder con error
-    if (!passwordMatch) {
+    const passwordValida = await bcrypt.compare(password, usuario.contrasena);
+    if (!passwordValida) {
       return res.status(401).json({ success: false, message: 'Contraseña incorrecta' });
     }
 
-    // Si todo es correcto, responder con éxito
-    res.json({ success: true, message: 'Inicio de sesión exitoso' });
+    return res.status(200).json({ success: true, message: 'Inicio de sesión exitoso' });
   } catch (error) {
-    console.error(error);
-    // Error general del servidor
-    res.status(500).json({ success: false, message: 'Error en el servidor' });
+    console.error('Error en el login:', error);
+    return res.status(500).json({ success: false, message: 'Error en el login' });
   }
 });
 
-// Puerto donde correrá el servidor
-const PORT = 8000;
-console.log('Iniciando servidor...');
-
-// Iniciar servidor y escuchar peticiones
+// Iniciar servidor
 app.listen(PORT, () => {
-  console.log(`Servidor backend escuchando en http://localhost:${PORT}`);
+  console.log(`🚀 Servidor escuchando en http://localhost:${PORT}`);
 });
