@@ -4,20 +4,20 @@ import './Categorias.css'; // Importa los estilos
 
 // Lista de categorías con su nombre e imagen
 const categorias = [
-  { label: 'PC Gamer', image: '/images/pcgamer.png' },
-  { label: 'Periféricos', image: '/images/perifericos.png' },
-  { label: 'Sillas', image: '/images/sillas.png' },
-  { label: 'Figuras', image: '/images/figuras.png' },
-  { label: 'Hardware', image: '/images/hardware.png' },
-  { label: 'Accesorios', image: '/images/acsesorios.png' },
-  { label: 'Consolas', image: '/images/consolas.png' },
-  { label: 'Juegos', image: '/images/juegos.png' }
+  { label: 'PC Gamer', image: '/images/pcgamer.png', path: '/pcgamer' },
+  { label: 'Periféricos', image: '/images/perifericos.png', path: '/perifericos' },
+  { label: 'Sillas', image: '/images/sillas.png', path: '/sillas' },
+  { label: 'Figuras', image: '/images/figuras.png', path: '/figuras' },
+  { label: 'Hardware', image: '/images/hardware.png', path: '/hardware' },
+  { label: 'Accesorios', image: '/images/acsesorios.png', path: '/accesorios' },
+  { label: 'Consolas', image: '/images/consolas.png', path: '/consolas' },
+  { label: 'Juegos', image: '/images/juegos.png', path: '/juegos' }
 ];
 
 // Componente individual de botón de categoría
-const CategoryButton = ({ label, image }) => (
+const CategoryButton = ({ label, image, path }) => (
   <div className="category-button-container">
-    <Link to={`/productos?categoria=${encodeURIComponent(label.toLowerCase())}`}>
+    <Link to={path}>
       <button className="boton-morado">
         <img src={image} alt={label} />
       </button>
@@ -33,7 +33,8 @@ const Categorias = () => {
     rows.push(
       <div key={i} className="categorias-row">
         {categorias.slice(i, i + 4).map((cat, idx) => (
-          <CategoryButton key={idx} label={cat.label} image={cat.image} />
+          <CategoryButton key={idx} label={cat.label} 
+          image={cat.image} path={cat.path}/>
         ))}
       </div>
     );

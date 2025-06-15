@@ -20,8 +20,6 @@ const AdminPanel = () => {
         return <GestionUsuarios />;
       case 'configuracion-tienda':
         return <ConfiguracionTienda />;
-      case 'seguridad':
-        return <Seguridad />;
       default:
         return <GestionProductos />;
     }
@@ -54,12 +52,7 @@ const AdminPanel = () => {
         >
           Configuración de la Tienda
         </button>
-        <button
-          className={adminSection === 'seguridad' ? 'active' : ''}
-          onClick={() => setAdminSection('seguridad')}
-        >
-          Seguridad
-        </button>
+        
       </div>
 
       <div className="admin-content">{renderAdminContent()}</div>

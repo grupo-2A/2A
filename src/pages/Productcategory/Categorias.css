@@ -1,0 +1,62 @@
+/* Contenedor principal */
+.categoria-container {
+    padding: 40px 20px;
+    background-color: #1a1a1a; /* Fondo oscuro para contraste */
+    min-height: 100vh;
+  }
+  
+  /* Título */
+  .categoria-container h1 {
+    color: white;
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2.2rem;
+  }
+  
+  /* Contenedor de productos */
+  .productos-categoria {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  
+  /* Tarjeta individual de producto */
+  .producto-card {
+    background-color: #2a2a2a;
+    border-radius: 12px;
+    padding: 16px;
+    width: 220px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+  }
+  
+  .producto-card:hover {
+    transform: translateY(-6px);
+  }
+  
+  /* Título del producto */
+  .producto-card h3 {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin: 10px 0 4px;
+    color: white;
+  }
+  
+  /* Precio */
+  .producto-card p:nth-of-type(1) {
+    color: #f1f1f1;
+    font-size: 0.95rem;
+    margin: 4px 0;
+  }
+  
+  /* Stock */
+  .producto-card p:nth-of-type(2) {
+    color: #cccccc;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+  }
+  
+  

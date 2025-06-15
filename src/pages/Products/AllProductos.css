@@ -1,0 +1,98 @@
+.all-productos-container {
+    padding: 40px 20px;
+    background-color: #1a1a1a; /* Fondo oscuro para contraste */
+    min-height: 100vh;
+  }
+  
+  .all-productos-container h1 {
+    color: white;
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2.2rem;
+  }
+  
+  .fila-productos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  
+  .producto-card {
+    background-color: #2a2a2a;
+    border-radius: 12px;
+    padding: 16px;
+    width: 220px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+  }
+  
+  .producto-card:hover {
+    transform: translateY(-6px);
+  }
+  
+  .cuadro-morado {
+    background-color: #6a0dad;
+    width: 100%;
+    height: 180px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .cuadro-morado img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+    transition: filter 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .cuadro-morado:hover img {
+    filter: brightness(1.2);
+    box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.7);
+  }
+  
+  .texto-producto {
+    font-weight: bold;
+    font-size: 1rem;
+    margin: 10px 0 4px;
+    color: white;
+    text-align: center;
+  }
+  
+  .texto-precio {
+    color: #f1f1f1;
+    font-size: 0.95rem;
+    margin: 4px 0;
+  }
+  
+  .texto-stock {
+    color: #cccccc;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+  }
+  
+  .boton-comprar {
+    background-color: #6a0dad;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .boton-comprar:hover {
+    background-color: #8b2dd2;
+  }
+  
+  
+
+
+  

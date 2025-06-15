@@ -1,0 +1,101 @@
+/* Oculta flechas de los input tipo number */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+/* Admin.css */
+.admin-panel {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f1f5f9;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.titulo-admin {
+  font-size: 2rem;
+  color: #0f172a;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.seccion {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.seccion h2 {
+  margin-bottom: 1rem;
+  color: #1e293b;
+}
+
+.form-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+input,
+select {
+  padding: 0.6rem;
+  border: 1px solid #94a3b8;
+  border-radius: 8px;
+  font-size: 1rem;
+  flex: 1;
+  min-width: 150px;
+}
+
+button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #3b82f6;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #2563eb;
+}
+
+.btn-delete {
+  background-color: #ef4444;
+  margin-left: 0.5rem;
+  padding: 0.4rem 0.8rem;
+}
+
+.btn-delete:hover {
+  background-color: #dc2626;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  color: #334155;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+  
+  
+  

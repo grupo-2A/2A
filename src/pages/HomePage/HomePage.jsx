@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaFire } from 'react-icons/fa'; // Icono de fuego para productos destacados
+import { useNavigate } from 'react-router-dom'; // Importar useNavigate para navegación
 import Header from '../../components/Header/Header'; // Componente de encabezado
 import Footer from '../../components/Footer/Footer'; // Componente de pie de página
 import Productos from '../../components/Productos'; // Componente que muestra productos
@@ -12,6 +13,8 @@ import './HomePage.css';
 const Divider = () => <hr className="divider" />;
 
 const HomePage = () => {
+  const navigate = useNavigate(); // Hook para navegación
+
   // Estado para controlar la visibilidad del botón "scroll to top"
   const [showScrollToTop, setShowScrollToTop] = useState(false);
 
@@ -38,9 +41,14 @@ const HomePage = () => {
     const handleScroll = () => {
       setShowScrollToTop(window.scrollY > 300);
     };
+    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const irATodosLosProductos = () => {
+    navigate('/AllProductos'); 
+  };
 
   // Función para hacer scroll suave hacia arriba
   const scrollToTop = () => {
@@ -85,7 +93,13 @@ const HomePage = () => {
             <FaFire className="fire-icon" />
             <h2>Productos Destacados</h2>
           </div>
-          <button className="boton-ver-mas" aria-label="Ver más productos destacados" />
+          <button
+            className="boton-ver-mas"
+            onClick={irATodosLosProductos}
+            aria-label="Ver más productos"
+          >
+            Ver más
+          </button>
         </section>
 
         <Productos />
@@ -107,7 +121,6 @@ const HomePage = () => {
       </main>
 
       <Footer />
-     
 
       {showScrollToTop && (
         <button
@@ -117,12 +130,9 @@ const HomePage = () => {
         >
           ↑
         </button>
-        
       )}
     </>
-    
   );
-    
 };
 
 export default HomePage;

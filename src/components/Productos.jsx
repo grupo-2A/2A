@@ -1,31 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './productos.css'; // Importa los estilos CSS
 
-const productos = [
-  { nombre: 'Monitor SAMSUNG 24"', imagen: '/images/destacados/monitor.png', precio: 449900 },
-  { nombre: 'Juego PS5 EA Sports FC 25', imagen: '/images/destacados/fifa.png', precio: 319900 },
-  { nombre: 'Portátil LENOVO 15.6"', imagen: '/images/destacados/portatil.png', precio: 2349900 },
-  { nombre: 'Silla de Oficina', imagen: '/images/destacados/sillaof.png', precio: 579900 },
-  { nombre: 'Esferas De Dragon Ball Z', imagen: '/images/destacados/esfera.png', precio: 199900 },
-  { nombre: 'Funko Pop! One Piece - Roronoa', imagen: '/images/destacados/zoro.png', precio: 89900 },
-  { nombre: 'Reproductor Mp5 Genérico', imagen: '/images/destacados/game.png', precio: 159900 },
-  { nombre: 'Tarjeta Gráfica Gt210', imagen: '/images/destacados/tarjeta.png', precio: 259900 }
+// Productos locales con imágenes
+const productosLocales = [
+  { imagen: '/images/destacados/fifa.png', nombre: "PS5 EA sports FC 25" },
+  { imagen: '/images/destacados/monitor.png', nombre: "Monitor Samsung 24 Pulgadas" },
+  { imagen: '/images/destacados/portatil.png', nombre: "Portátil Lenovo 15.6 " },
+  { imagen: '/images/destacados/sillaof.png', nombre: "Silla de oficina" },
+  { imagen: '/images/destacados/esfera.png', nombre: "Esferas del Dragón DBZ" },
+  { imagen: '/images/destacados/zoro.png', nombre: "Funko Pop! One Piece - Roronoa" },
+  { imagen: '/images/destacados/game.png', nombre: "Reproductor MP5 Genérico" },
+  { imagen: '/images/destacados/tarjeta.png', nombre: "Tarjeta Grafica GT210" }
 ];
 
+// Tarjeta individual del producto
 const ProductCard = ({ producto }) => {
   const navigate = useNavigate();
+  const { nombre, imagen, precio, cantidad } = producto;
+
+  let textoStock;
+  if (cantidad > 10) {
+    textoStock = "Disponible";
+  } else if (cantidad > 0 && cantidad <= 10) {
+    textoStock = `Quedan ${cantidad} unidad${cantidad > 1 ? 'es' : ''}`;
+  } else {
+    textoStock = "No hay stock";
+  }
 
   return (
     <div style={{ textAlign: 'center' }}>
       <div className="cuadro-morado">
         <img
-          src={producto.imagen}
-          alt={producto.nombre}
+          src={imagen}
+          alt={nombre}
+          width={120} 
         />
       </div>
-      <p className="texto-producto">{producto.nombre}</p>
-      <p className="texto-precio">${producto.precio.toLocaleString()}</p>
+      <p className="texto-producto">{nombre}</p>
+      <p className="texto-precio">${precio.toLocaleString('es-CO')}</p>
+      <p className="texto-stock">{textoStock}</p>
       <button
         className="boton-comprar"
         onClick={() => navigate('/product')}
@@ -38,26 +53,48 @@ const ProductCard = ({ producto }) => {
 };
 
 const Productos = () => {
-  const rows = [];
-  for (let i = 0; i < productos.length; i += 4) {
-    rows.push(
-      <div
-        key={i}
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '20px',
-          marginBottom: '40px'
-        }}
-      >
-        {productos.slice(i, i + 4).map((producto, idx) => (
-          <ProductCard key={idx} producto={producto} />
-        ))}
-      </div>
-    );
-  }
+  const [productos, setProductos] = useState([]);
 
-  return <>{rows}</>;
+  useEffect(() => {
+    axios.get('http://localhost:8000/productos/')
+      .then(res => {
+        const productosDB = res.data;
+
+        // Mapear productos locales con sus datos del backend por nombre
+        const combinados = productosLocales.map(local => {
+          const encontrado = productosDB.find(p =>
+            p.nombre.trim().toLowerCase() === local.nombre.trim().toLowerCase()
+          );
+
+          return {
+            ...local,
+            precio: encontrado ? encontrado.precio : 0,
+            cantidad: encontrado ? encontrado.cantidad : 0
+          };
+        });
+
+        setProductos(combinados);
+      })
+      .catch(err => {
+        console.error("Error al cargar productos desde el backend:", err);
+        const sinDatos = productosLocales.map(p => ({ ...p, precio: 0, cantidad: 0 }));
+        setProductos(sinDatos);
+      });
+  }, []);
+
+  // Mostrar productos en filas de 4
+  return (
+    <div>
+      {productos.reduce((rows, producto, index) => {
+        if (index % 4 === 0) rows.push([]);
+        rows[rows.length - 1].push(producto);
+        return rows;
+      }, []).map((fila, i) => (
+        <div key={i} style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginBottom: '40px' }}>
+          {fila.map((p, index) => <ProductCard key={index} producto={p} />)}
+        </div>
+      ))}
+    </div>
+  );
 };
-
 export default Productos;
