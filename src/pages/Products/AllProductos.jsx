@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import './AllProductos.css';
+import { useNavigate } from 'react-router-dom';
 
 const productosLocales = [
   { imagen: '/images/destacados/fifa.png', nombre: "PS5 EA sports FC 25" },
@@ -32,9 +32,7 @@ const ProductCard = ({ producto }) => {
         {imagen ? (
           <img src={imagen} alt={nombre} width={120} />
         ) : (
-          // Imagen por defecto o comentario para agregar luego
           <div style={{ width: 120, height: 120, backgroundColor: '#ccc', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            {/* TODO: Agregar imagen para este producto */}
             <span style={{ fontSize: '12px', textAlign: 'center', padding: '4px' }}>Imagen no disponible</span>
           </div>
         )}
@@ -49,6 +47,7 @@ const ProductCard = ({ producto }) => {
 
 const AllProductos = () => {
   const [productos, setProductos] = useState([]);
+  const navigate = useNavigate(); // ✅ Aquí sí está bien
 
   useEffect(() => {
     const obtenerProductos = async () => {
@@ -56,7 +55,6 @@ const AllProductos = () => {
         const res = await axios.get('http://localhost:8000/productos/');
         const productosDB = res.data;
 
-        // 1. Mapear productos locales (con imagen)
         const productosConImagen = productosLocales.map(local => {
           const match = productosDB.find(p =>
             p.nombre.trim().toLowerCase() === local.nombre.trim().toLowerCase()
@@ -68,16 +66,14 @@ const AllProductos = () => {
           };
         });
 
-        // 2. Agregar los productos del backend que no están en los locales
         const nombresLocales = productosLocales.map(p => p.nombre.trim().toLowerCase());
         const productosSinImagen = productosDB
           .filter(p => !nombresLocales.includes(p.nombre.trim().toLowerCase()))
           .map(p => ({
             ...p,
-            imagen: null // ❗ Aquí se puede luego agregar la ruta de imagen cuando esté disponible
+            imagen: null
           }));
 
-        // 3. Unir todo y guardar
         setProductos([...productosConImagen, ...productosSinImagen]);
       } catch (error) {
         console.error('Error al obtener productos desde el backend:', error);
@@ -89,7 +85,6 @@ const AllProductos = () => {
     obtenerProductos();
   }, []);
 
-  // Agrupar productos en filas de 4
   const filasDeProductos = productos.reduce((filas, producto, index) => {
     if (index % 4 === 0) filas.push([]);
     filas[filas.length - 1].push(producto);
@@ -98,7 +93,10 @@ const AllProductos = () => {
 
   return (
     <>
-      <Header />
+      <img src="/images/logo.png" alt="Logo" className="logo" />
+      <div className="header-buttons">
+        <button onClick={() => navigate('/')}>Volver al Home</button>
+      </div>
       <main className="all-productos-container">
         <h1>Todos los Productos</h1>
         {filasDeProductos.map((fila, i) => (
@@ -115,5 +113,3 @@ const AllProductos = () => {
 };
 
 export default AllProductos;
-
-
