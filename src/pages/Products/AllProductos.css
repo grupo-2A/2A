@@ -92,6 +92,35 @@
     background-color: #8b2dd2;
   }
   
+  .header-busqueda {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+ 
+  .barra-busqueda {
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-left: 5cm; /* separación del logo */
+    width: 50px;
+  }
+  
+  .boton-buscar,
+  .boton-home {
+    padding: 6px 10px;
+    margin-left: 10px;
+    background-color: #663399; /* ejemplo: morado */
+    color: rgb(239, 240, 243);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .boton-buscar:hover,
+  .boton-home:hover {
+    background-color: #512a87;
+  }
   
 
 

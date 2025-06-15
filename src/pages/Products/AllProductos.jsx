@@ -101,19 +101,21 @@ const AllProductos = () => {
 
   return (
     <>
-      <img src="/images/logo.png" alt="Logo" className="logo" />
-      
-      <div className="header-buttons" style={{ display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '20px' }}>
-        <button onClick={() => navigate('/')}>Volver al Home</button>
-        <input
-          type="text"
-          placeholder="Buscar producto..."
-          value={busqueda}
-          onChange={(e) => setBusqueda(e.target.value)}
-          style={{ padding: '6px', borderRadius: '4px', border: '1px solid #ccc' }}
-        />
-        <button onClick={() => {}} style={{ padding: '6px 10px' }}>Buscar</button>
-      </div>
+   <div className="header-busqueda">
+  <img src="/images/logo.png" alt="Logo" className="logo" />
+
+  <input
+    type="text"
+    placeholder="Buscar producto..."
+    value={busqueda}
+    onChange={(e) => setBusqueda(e.target.value)}
+    className="barra-busqueda"
+  />
+
+  <button className="boton-buscar">Buscar</button>
+  <button className="boton-home" onClick={() => navigate('/')}>Volver al Home</button>
+</div>
+
 
       <main className="all-productos-container">
         <h1>Todos los Productos</h1>
