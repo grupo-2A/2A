@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import './Categorias.css';
+import { useNavigate } from 'react-router-dom';
 
 // Productos locales con imágenes (puedes agregar más si los tienes)
 const productosLocales = [
@@ -11,7 +12,7 @@ const productosLocales = [
 
 const Accesorios = () => {
   const [productos, setProductos] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const obtenerProductos = async () => {
       try {
@@ -36,12 +37,17 @@ const Accesorios = () => {
       }
     };
 
+
     obtenerProductos();
   }, []);
 
   return (
     <>
-      <Header />
+       {/* Botones visibles en todas las pestañas */}
+       <img src="/images/logo.png" alt="Logo" className="logo" />
+       <div className="header-buttons">
+        <button onClick={() => navigate('/')}>Volver al Home</button>
+      </div>
       <main className="categoria-container">
         <h1>Accesorios</h1>
         <div className="productos-categoria">

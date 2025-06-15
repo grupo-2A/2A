@@ -6,6 +6,7 @@ import AdminPanel from './AdminPanel';
 import VendedorView from './VendedorView';
 import './CartPage.css';
 
+
 const CartPage = () => {
   const [tab, setTab] = useState('cliente');
   const [usuario, setUsuario] = useState(null);
