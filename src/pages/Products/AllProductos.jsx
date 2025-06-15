@@ -15,7 +15,6 @@ const productosLocales = [
   { imagen: '/images/destacados/tarjeta.png', nombre: "Tarjeta Grafica GT210" }
 ];
 
-// Componente individual para mostrar un producto
 const ProductCard = ({ producto }) => {
   const { nombre, imagen, precio = 0, cantidad = 0 } = producto;
 
@@ -47,9 +46,13 @@ const ProductCard = ({ producto }) => {
 
 const AllProductos = () => {
   const [productos, setProductos] = useState([]);
-  const navigate = useNavigate(); // ✅ Aquí sí está bien
+  const [busqueda, setBusqueda] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
+    // Scroll al tope de la página al cargar
+    window.scrollTo(0, 0);
+
     const obtenerProductos = async () => {
       try {
         const res = await axios.get('http://localhost:8000/productos/');
@@ -85,7 +88,12 @@ const AllProductos = () => {
     obtenerProductos();
   }, []);
 
-  const filasDeProductos = productos.reduce((filas, producto, index) => {
+  // Filtrado básico por nombre
+  const productosFiltrados = productos.filter(p =>
+    p.nombre.toLowerCase().includes(busqueda.toLowerCase())
+  );
+
+  const filasDeProductos = productosFiltrados.reduce((filas, producto, index) => {
     if (index % 4 === 0) filas.push([]);
     filas[filas.length - 1].push(producto);
     return filas;
@@ -94,9 +102,19 @@ const AllProductos = () => {
   return (
     <>
       <img src="/images/logo.png" alt="Logo" className="logo" />
-      <div className="header-buttons">
+      
+      <div className="header-buttons" style={{ display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '20px' }}>
         <button onClick={() => navigate('/')}>Volver al Home</button>
+        <input
+          type="text"
+          placeholder="Buscar producto..."
+          value={busqueda}
+          onChange={(e) => setBusqueda(e.target.value)}
+          style={{ padding: '6px', borderRadius: '4px', border: '1px solid #ccc' }}
+        />
+        <button onClick={() => {}} style={{ padding: '6px 10px' }}>Buscar</button>
       </div>
+
       <main className="all-productos-container">
         <h1>Todos los Productos</h1>
         {filasDeProductos.map((fila, i) => (

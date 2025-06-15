@@ -15,6 +15,8 @@ const Hardware = () => {
   const [productos, setProductos] = useState([]);
 const navigate = useNavigate();
   useEffect(() => {
+     // Scroll al tope de la página al cargar
+     window.scrollTo(0, 0);
     const obtenerProductos = async () => {
       try {
         const res = await axios.get('http://localhost:8000/productos/');

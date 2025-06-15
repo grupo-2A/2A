@@ -5,7 +5,6 @@ import Footer from '../../components/Footer/Footer';
 import './Categorias.css';
 import { useNavigate } from 'react-router-dom';
 
-
 // Productos locales con imágenes
 const productosLocales = [
   { imagen: '/images/consolas/ps5.png', nombre: "PlayStation 5" },
@@ -15,6 +14,8 @@ const Consolas = () => {
   const [productos, setProductos] = useState([]);
 const navigate = useNavigate();
   useEffect(() => {
+     // Scroll al tope de la página al cargar
+     window.scrollTo(0, 0);
     const obtenerProductos = async () => {
       try {
         const res = await axios.get('http://localhost:8000/productos/');
