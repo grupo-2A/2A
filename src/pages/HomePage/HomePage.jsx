@@ -1,56 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { FaFire } from 'react-icons/fa'; // Icono de fuego para productos destacados
-import { useNavigate } from 'react-router-dom'; // Importar useNavigate para navegación
-import Header from '../../components/Header/Header'; // Componente de encabezado
-import Footer from '../../components/Footer/Footer'; // Componente de pie de página
-import Productos from '../../components/Productos'; // Componente que muestra productos
-import Categorias from '../../components/Categorias'; // Componente que muestra categorías
+import { FaFire, FaWhatsapp } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
-// Importar estilos externos
+import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
+import Productos from '../../components/Productos';
+import Categorias from '../../components/Categorias';
+
 import './HomePage.css';
 
-// Componente simple que renderiza una línea divisoria (hr) con clase CSS "divider"
 const Divider = () => <hr className="divider" />;
 
 const HomePage = () => {
-  const navigate = useNavigate(); // Hook para navegación
-
-  // Estado para controlar la visibilidad del botón "scroll to top"
+  const navigate = useNavigate();
   const [showScrollToTop, setShowScrollToTop] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Array con las rutas de las imágenes que quieres rotar
   const images = [
     '/images/inicio.png',
     '/images/inicio2.png',
     '/images/inicio3.png'
   ];
 
-  // Estado para la imagen actual (índice)
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  // Cambiar imagen automáticamente cada 4 segundos
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setCurrentImageIndex(prevIndex => (prevIndex + 1) % images.length);
+      setCurrentImageIndex(prev => (prev + 1) % images.length);
     }, 4000);
     return () => clearInterval(intervalId);
   }, [images.length]);
 
-  // Manejo del scroll para mostrar botón "scroll to top"
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollToTop(window.scrollY > 300);
     };
-    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const irATodosLosProductos = () => {
-    navigate('/AllProductos'); 
+    navigate('/AllProductos');
   };
 
-  // Función para hacer scroll suave hacia arriba
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -60,7 +50,7 @@ const HomePage = () => {
       <Header />
 
       <main>
-        {/* Slider de imágenes con puntos de navegación */}
+        {/* Slider de imágenes */}
         <section className="hero-image-container" style={{ textAlign: 'center' }}>
           <img
             src={images[currentImageIndex]}
@@ -131,6 +121,17 @@ const HomePage = () => {
           ↑
         </button>
       )}
+
+      {/* Ícono flotante de WhatsApp */}
+      <a
+        href="https://wa.me/573185305185?text=Bienvenido%20a%20Overloot%2C%20potencia%20tu%20setup%20con%20la%20mejor%20tecnol%C3%B3gica%20gamer.%20%C2%BFEn%20qu%C3%A9%20le%20podemos%20colaborar%3F"
+        className="whatsapp-float"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="WhatsApp Overloot"
+      >
+        <FaWhatsapp />
+      </a>
     </>
   );
 };
