@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './ProductDetail.css';
 import Footer from '../../components/Footer/Footer';
 
+const Divider = () => <hr className="divider" />;
 
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
@@ -47,6 +48,9 @@ const ProductDetail = () => {
       <div className="header-buttons">
         <button onClick={() => navigate('/allproductos')}>Atrás</button>
         <button onClick={() => navigate('/')}>Volver al Home</button>
+        <button onClick={() => navigate('/cart')} className="cart-button">
+          <img src="/images/carro.png" alt="Carrito" className="cart-icon" />
+        </button>
       </div>
 
       <h2 className="product-title">DETALLE DEL PRODUCTO</h2>
@@ -112,9 +116,8 @@ const ProductDetail = () => {
           <button className="buy-button" onClick={handleBuy}>Agregar al carrito</button>
         </div>
       </div>
-
+      <Divider/>
       <Footer />
-    
     </div>
   );
 };
