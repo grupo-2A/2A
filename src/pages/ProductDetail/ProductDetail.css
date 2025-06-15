@@ -109,3 +109,30 @@
     margin-bottom: 10px;
   }
   
+  .cantidad-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 5px;
+  }
+  
+  .cantidad-control input {
+    width: 60px;
+    text-align: center;
+    padding: 4px;
+  }
+  
+  .cantidad-control button {
+    padding: 4px 10px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #6a0dad;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .cantidad-control button:hover {
+    background-color: #8b2dd2;
+  }

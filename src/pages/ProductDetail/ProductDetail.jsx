@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProductDetail.css';
+import Footer from '../../components/Footer/Footer';
+
 
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
@@ -20,6 +22,7 @@ const ProductDetail = () => {
 
   const handleBuy = () => {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
     const existingItemIndex = cart.findIndex(item => item.name === product.name);
 
     if (existingItemIndex >= 0) {
@@ -41,7 +44,6 @@ const ProductDetail = () => {
     <div className="product-detail-container">
       <img src="/images/logo.png" alt="Logo" className="logo" />
 
-      {/* Botones de navegación */}
       <div className="header-buttons">
         <button onClick={() => navigate('/allproductos')}>Atrás</button>
         <button onClick={() => navigate('/')}>Volver al Home</button>
@@ -54,14 +56,14 @@ const ProductDetail = () => {
           <h3>Información del producto</h3>
           <p><strong>Nombre:</strong> {product.name}</p>
           <p><strong>Detalles:</strong> {product.details}</p>
-          <p><strong>Especificaciones:</strong> {product.specs}</p>
+          <p><strong>Especificaciones:</strong> {product.specs || 'No disponibles'}</p>
         </div>
 
         <div className="product-card">
           <h3>Vista previa</h3>
-          <img 
-            src={product.image} 
-            alt={product.name} 
+          <img
+            src={product.image}
+            alt={product.name}
             style={{ width: '300px', height: 'auto', objectFit: 'contain' }}
           />
 
@@ -74,19 +76,35 @@ const ProductDetail = () => {
           <div className="product-inputs">
             <label>
               Cantidad
-              <input
-                type="number"
-                min="1"
-                value={quantity}
-                onChange={e => setQuantity(parseInt(e.target.value) || 1)}
-              />
+              <div className="cantidad-control">
+                <button
+                  type="button"
+                  onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
+                >−</button>
+
+                <input
+                  type="number"
+                  min="1"
+                  value={quantity}
+                  onChange={e => {
+                    const val = parseInt(e.target.value);
+                    setQuantity(isNaN(val) || val < 1 ? 1 : val);
+                  }}
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setQuantity(prev => prev + 1)}
+                >+</button>
+              </div>
             </label>
+
             <label>
               Precio Total
-              <input 
-                type="text" 
-                value={`$${(quantity * product.price).toLocaleString()}`} 
-                readOnly 
+              <input
+                type="text"
+                value={`$${(quantity * product.price).toLocaleString()}`}
+                readOnly
               />
             </label>
           </div>
@@ -95,24 +113,8 @@ const ProductDetail = () => {
         </div>
       </div>
 
-      <footer className="footer">
-        <div className="footer-section logo">
-          <img src="/images/logo.png" alt="Logo" />
-          <p><strong>Loot para tu Setup</strong></p>
-        </div>
-        <div className="footer-section">
-          <h3>Contacto</h3>
-          <p>Bogotá, Colombia</p>
-          <p>overloot@loot.com</p>
-          <p>0000-0000-0000</p>
-        </div>
-        <div className="footer-section">
-          <h3>Cuenta</h3>
-          <p>Mi cuenta</p>
-          <p>Iniciar sesión/Registrarse</p>
-          <p>Carrito</p>
-        </div>
-      </footer>
+      <Footer />
+    
     </div>
   );
 };
