@@ -17,6 +17,7 @@ const productosLocales = [
 
 const ProductCard = ({ producto }) => {
   const { nombre, imagen, precio = 0, cantidad = 0 } = producto;
+  const navigate = useNavigate();
 
   const textoStock =
     cantidad > 10
@@ -25,21 +26,25 @@ const ProductCard = ({ producto }) => {
       ? `Quedan ${cantidad} unidad${cantidad > 1 ? 'es' : ''}`
       : 'No hay stock';
 
+  const irADetalle = () => {
+        navigate(`/product`);
+  };
+
   return (
     <div className="producto-card">
       <div className="cuadro-morado">
         {imagen ? (
           <img src={imagen} alt={nombre} width={120} />
         ) : (
-          <div style={{ width: 120, height: 120, backgroundColor: '#ccc', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span style={{ fontSize: '12px', textAlign: 'center', padding: '4px' }}>Imagen no disponible</span>
+          <div className="imagen-placeholder">
+            <span>Imagen no disponible</span>
           </div>
         )}
       </div>
       <p className="texto-producto">{nombre}</p>
       <p className="texto-precio">${precio.toLocaleString('es-CO')}</p>
       <p className="texto-stock">{textoStock}</p>
-      <button className="boton-comprar">Comprar</button>
+      <button className="boton-comprar" onClick={irADetalle}>Comprar</button>
     </div>
   );
 };
@@ -50,7 +55,6 @@ const AllProductos = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Scroll al tope de la página al cargar
     window.scrollTo(0, 0);
 
     const obtenerProductos = async () => {
@@ -88,7 +92,6 @@ const AllProductos = () => {
     obtenerProductos();
   }, []);
 
-  // Filtrado básico por nombre
   const productosFiltrados = productos.filter(p =>
     p.nombre.toLowerCase().includes(busqueda.toLowerCase())
   );
@@ -101,21 +104,20 @@ const AllProductos = () => {
 
   return (
     <>
-   <div className="header-busqueda">
-  <img src="/images/logo.png" alt="Logo" className="logo" />
-
-  <input
-    type="text"
-    placeholder="Buscar producto..."
-    value={busqueda}
-    onChange={(e) => setBusqueda(e.target.value)}
-    className="barra-busqueda"
-  />
-
-  <button className="boton-buscar">Buscar</button>
-  <button className="boton-home" onClick={() => navigate('/')}>Volver al Home</button>
-</div>
-
+      <div className="header-busqueda">
+        <img src="/images/logo.png" alt="Logo" className="logo" />
+        <div className="busqueda-container">
+          <input
+            type="text"
+            placeholder="Buscar producto..."
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+            className="barra-busqueda"
+          />
+          <button className="boton-buscar">Buscar</button>
+        </div>
+        <button className="boton-home" onClick={() => navigate('/')}>Volver al Home</button>
+      </div>
 
       <main className="all-productos-container">
         <h1>Todos los Productos</h1>

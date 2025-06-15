@@ -98,16 +98,17 @@
     margin-bottom: 20px;
   }
  
-  .barra-busqueda {
-    padding: 6px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    margin-left: 5cm; /* separación del logo */
-    width: 50px;
-  }
+
   
-  .boton-buscar,
-  .boton-home {
+.barra-busqueda {
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 250px;
+  margin-left: 12cm; /* separación del logo */
+}
+
+  .boton-buscar{
     padding: 6px 10px;
     margin-left: 10px;
     background-color: #663399; /* ejemplo: morado */
@@ -117,11 +118,23 @@
     cursor: pointer;
   }
   
-  .boton-buscar:hover,
-  .boton-home:hover {
+  .boton-buscar:hover {
     background-color: #512a87;
   }
   
-
+.boton-home{
+  background-color: black; /* Fondo negro */
+  color: white;            /* Texto blanco */
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  position: fixed;         /* Fijo en la página */
+  top: 20px;               /* Separado 20px del borde superior */
+  right: 100px;             /* Separado 20px del borde derecho */
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  z-index: 1000; 
+}
 
   
