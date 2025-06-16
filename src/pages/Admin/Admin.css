@@ -11,12 +11,12 @@ input[type=number] {
 
 /* Admin.css */
 .admin-panel {
-  max-width: 800px;
+  max-width: 8000px;
   margin: 2rem auto;
   padding: 2rem;
-  background-color: #f1f5f9;
+  background-color: #322536;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, auto);
   font-family: 'Segoe UI', sans-serif;
 }
 
