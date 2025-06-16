@@ -43,7 +43,10 @@ const ProductCard = ({ producto }) => {
       <p className="texto-stock">{textoStock}</p>
       <button
         className="boton-comprar"
-        onClick={() => navigate('/product')}
+        onClick={() => {
+          localStorage.setItem("selectedProduct", JSON.stringify(producto));
+          navigate('/product');
+        }}
         aria-label="Comprar"
       >
         Comprar
@@ -60,7 +63,6 @@ const Productos = () => {
       .then(res => {
         const productosDB = res.data;
 
-        // Mapear productos locales con sus datos del backend por nombre
         const combinados = productosLocales.map(local => {
           const encontrado = productosDB.find(p =>
             p.nombre.trim().toLowerCase() === local.nombre.trim().toLowerCase()
@@ -82,7 +84,6 @@ const Productos = () => {
       });
   }, []);
 
-  // Mostrar productos en filas de 4
   return (
     <div>
       {productos.reduce((rows, producto, index) => {
@@ -97,4 +98,6 @@ const Productos = () => {
     </div>
   );
 };
+
 export default Productos;
+

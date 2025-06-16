@@ -27,7 +27,9 @@ const ProductCard = ({ producto }) => {
       : 'No hay stock';
 
   const irADetalle = () => {
-        navigate(`/product`);
+    // Guardar producto en localStorage
+    localStorage.setItem("selectedProduct", JSON.stringify(producto));
+    navigate(`/product`);
   };
 
   return (
