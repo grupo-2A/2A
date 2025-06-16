@@ -1,125 +1,88 @@
+// src/components/Productos.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './ProductDetail.css';
-import Footer from '../../components/Footer/Footer';
+import axios from 'axios';
+import './productos.css';
 
-const Divider = () => <hr className="divider" />;
+const productosLocales = [
+  { imagen: '/images/destacados/fifa.png', nombre: "PS5 EA sports FC 25" },
+  { imagen: '/images/destacados/monitor.png', nombre: "Monitor Samsung 24 Pulgadas" },
+  { imagen: '/images/destacados/portatil.png', nombre: "Portátil Lenovo 15.6 " },
+  { imagen: '/images/destacados/sillaof.png', nombre: "Silla de oficina" },
+  { imagen: '/images/destacados/esfera.png', nombre: "Esferas del Dragón DBZ" },
+  { imagen: '/images/destacados/zoro.png', nombre: "Funko Pop! One Piece - Roronoa" },
+  { imagen: '/images/destacados/game.png', nombre: "Reproductor MP5 Genérico" },
+  { imagen: '/images/destacados/tarjeta.png', nombre: "Tarjeta Grafica GT210" }
+];
 
-const ProductDetail = () => {
-  const [quantity, setQuantity] = useState(1);
+const ProductCard = ({ producto }) => {
   const navigate = useNavigate();
+  const { nombre, imagen, precio, cantidad } = producto;
 
-  useEffect(() => {
-    // Scroll al tope de la página al cargar
-    window.scrollTo(0, 0);
-  }, []);
+  const textoStock =
+    cantidad > 10 ? "Disponible"
+    : cantidad > 0 ? `Quedan ${cantidad} unidad${cantidad > 1 ? 'es' : ''}`
+    : "No hay stock";
 
-  const product = {
-    name: 'Monitor SAMSUNG 24"',
-    price: 120000,
-    image: '/images/destacados/monitor.png',
-    details: 'Monitor de alta definición con diseño sin bordes.',
-  };
-
-  const handleBuy = () => {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-    const existingItemIndex = cart.findIndex(item => item.name === product.name);
-
-    if (existingItemIndex >= 0) {
-      cart[existingItemIndex].quantity += quantity;
-    } else {
-      cart.push({
-        name: product.name,
-        price: product.price,
-        quantity,
-        image: product.image
-      });
-    }
-
-    localStorage.setItem('cart', JSON.stringify(cart));
-    alert(`Se añadió ${quantity} unidad(es) de ${product.name} al carrito.`);
+  const irADetalle = () => {
+    localStorage.setItem('productoSeleccionado', JSON.stringify({ nombre, imagen, precio, cantidad }));
+    navigate('/product');
   };
 
   return (
-    <div className="product-detail-container">
-      <img src="/images/logo.png" alt="Logo" className="logo" />
-
-      <div className="header-buttons">
-        <button onClick={() => navigate('/allproductos')}>Atrás</button>
-        <button onClick={() => navigate('/')}>Volver al Home</button>
-        <button onClick={() => navigate('/cart')} className="cart-button">
-          <img src="/images/carro.png" alt="Carrito" className="cart-icon" />
-        </button>
+    <div style={{ textAlign: 'center' }}>
+      <div className="cuadro-morado">
+        <img src={imagen} alt={nombre} width={120} />
       </div>
-
-      <h2 className="product-title">DETALLE DEL PRODUCTO</h2>
-
-      <div className="product-detail-content">
-        <div className="product-info">
-          <h3>Información del producto</h3>
-          <p><strong>Nombre:</strong> {product.name}</p>
-          <p><strong>Detalles:</strong> {product.details}</p>
-          <p><strong>Especificaciones:</strong> {product.specs || 'No disponibles'}</p>
-        </div>
-
-        <div className="product-card">
-          <h3>Vista previa</h3>
-          <img
-            src={product.image}
-            alt={product.name}
-            style={{ width: '300px', height: 'auto', objectFit: 'contain' }}
-          />
-
-          <div className="product-summary">
-            <span><strong>{product.name}</strong></span>
-            <span><strong>${product.price.toLocaleString()}</strong></span>
-          </div>
-
-          <h3>Comprar</h3>
-          <div className="product-inputs">
-            <label>
-              Cantidad
-              <div className="cantidad-control">
-                <button
-                  type="button"
-                  onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
-                >−</button>
-
-                <input
-                  type="number"
-                  min="1"
-                  value={quantity}
-                  onChange={e => {
-                    const val = parseInt(e.target.value);
-                    setQuantity(isNaN(val) || val < 1 ? 1 : val);
-                  }}
-                />
-
-                <button
-                  type="button"
-                  onClick={() => setQuantity(prev => prev + 1)}
-                >+</button>
-              </div>
-            </label>
-
-            <label>
-              Precio Total
-              <input
-                type="text"
-                value={`$${(quantity * product.price).toLocaleString()}`}
-                readOnly
-              />
-            </label>
-          </div>
-
-          <button className="buy-button" onClick={handleBuy}>Agregar al carrito</button>
-        </div>
-      </div>
-      <Divider/>
-      <Footer />
+      <p className="texto-producto">{nombre}</p>
+      <p className="texto-precio">${precio.toLocaleString('es-CO')}</p>
+      <p className="texto-stock">{textoStock}</p>
+      <button className="boton-comprar" onClick={irADetalle}>Comprar</button>
     </div>
   );
 };
 
-export default ProductDetail;
+const Productos = () => {
+  const [productos, setProductos] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/productos/')
+      .then(res => {
+        const productosDB = res.data;
+
+        const combinados = productosLocales.map(local => {
+          const encontrado = productosDB.find(p =>
+            p.nombre.trim().toLowerCase() === local.nombre.trim().toLowerCase()
+          );
+          return {
+            ...local,
+            precio: encontrado ? encontrado.precio : 0,
+            cantidad: encontrado ? encontrado.cantidad : 0
+          };
+        });
+
+        setProductos(combinados);
+      })
+      .catch(err => {
+        console.error("Error al cargar productos desde el backend:", err);
+        const sinDatos = productosLocales.map(p => ({ ...p, precio: 0, cantidad: 0 }));
+        setProductos(sinDatos);
+      });
+  }, []);
+
+  return (
+    <div>
+      {productos.reduce((rows, producto, index) => {
+        if (index % 4 === 0) rows.push([]);
+        rows[rows.length - 1].push(producto);
+        return rows;
+      }, []).map((fila, i) => (
+        <div key={i} style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginBottom: '40px' }}>
+          {fila.map((p, index) => <ProductCard key={index} producto={p} />)}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default Productos;

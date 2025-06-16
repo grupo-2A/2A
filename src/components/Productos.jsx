@@ -56,7 +56,7 @@ const Productos = () => {
   const [productos, setProductos] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/productos/')
+    axios.get('http://localhost:8001/productos/')
       .then(res => {
         const productosDB = res.data;
 
