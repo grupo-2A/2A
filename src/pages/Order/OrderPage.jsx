@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './OrderPage.css';
+import Footer from '../../components/Footer/Footer';
 
 const OrderPage = () => {
   const navigate = useNavigate();
@@ -31,14 +32,22 @@ const OrderPage = () => {
     console.log('Datos del formulario:', formData);
     console.log('Productos:', items);
   };
+  
 
   return (
+    
+     
     <div className="order-page">
       <header className="order-header">
+         {/* Botones visibles en todas las pestañas */}
+       <img src="/images/logo.png" alt="Logo" className="logo" />
+       <div className="header-buttons">
+              </div>
+
         <h1>DETALLES DEL PEDIDO</h1>
         <button className="volver" onClick={() => navigate('/cart')}>Volver</button>
       </header>
-
+      
       <div className="order-content">
         <form onSubmit={handleSubmit} className="order-form">
           <label>Nombre:
@@ -84,25 +93,7 @@ const OrderPage = () => {
           </div>
         </div>
       </div>
-
-      <footer className="order-footer">
-        <div>
-          <img src="/images/logo.png" alt="logo" />
-          <p>Loot para tu Setup</p>
-        </div>
-        <div>
-          <h4>Contacto</h4>
-          <p>Bogotá, Colombia</p>
-          <p>overloot@loot.com</p>
-          <p>0000-0000-0000</p>
-        </div>
-        <div>
-          <h4>Cuenta</h4>
-          <p>Mi cuenta</p>
-          <p>Iniciar sesión/Registrarse</p>
-          <p>Carrito</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

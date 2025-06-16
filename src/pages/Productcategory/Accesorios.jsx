@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import './Categorias.css';
 import { useNavigate } from 'react-router-dom';
@@ -44,7 +43,7 @@ const Accesorios = () => {
   }, []);
 
   return (
-    <>
+    <> 
        {/* Botones visibles en todas las pestañas */}
        <img src="/images/logo.png" alt="Logo" className="logo" />
        <div className="header-buttons">
